@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+  <program
+    dbName="idoctp.db"
+    dboDir="c:\c_portab\01_rb\ProgramData\go-idoc2txt\"
+    inpDir="c:\c_portab\01_rb\_rbprojects\go-idoc2txt\idoctypes\"
+    outDir="c:\c_portab\01_rb\ProgramData\go-idoc2txt\"
+  />
+  <run option="cdb" objName="idoctp.db"/>
+  <run option="rid" objName="_-rb04_-yp3_delvry_rbna.txt"/>
+  <run option="rid" objName="_-rb04_-yp3_delvry_rbna_vw.txt"/>
+  <run option="rid" objName="_-rb04_-yp3_invoic02.txt"/>
+  <run option="rid" objName="_-rb04_-yp3_invoic02_cu.txt"/>
+  <run option="rid" objName="_-rb04_-yp3_invoic02_intrace.txt"/>
+  <run option="rid" objName="_-rb04_-yp3_invoic02_it.txt"/>
+  <run option="rid" objName="_-rb04_-yp3_invoic02_xml.txt"/>
+  <run option="rid" objName="delfor02.txt"/>
+  <run option="rid" objName="delvry03.txt"/>
+  <run option="rid" objName="delvry07.txt"/>
+  <run option="rid" objName="invoic01.txt"/>
+  <run option="rid" objName="invoic02.txt"/>
+  <run option="rid" objName="orders05.txt"/>
+  <run option="rid" objName="seqjit03.txt"/>
+  <run option="rid" objName="y04vdelvry03.txt"/>
+  <run option="rid" objName="y04vorders05.txt"/>
+  <run
+    option="unf"
+    objName="_-rb04_-yp3_invoic02_xml.txt"
+    inpDir="c:\c_portab\01_rb\ProgramData\go-idoc2txt\cfdi\input\"
+    outDir="c:\c_portab\01_rb\ProgramData\go-idoc2txt\cfdi\output\"
+    inpFilter="!(*processed*)"
+    inpName="rundt+idocn+docno+docdt+'inp'+'processed'"
+    outName="rundt+idocn+docno+docdt+'out'"
+  />
+  <run
+    option="unf"
+    objName="_-rb04_-yp3_invoic02.txt"
+    inpDir="c:\c_portab\01_rb\ProgramData\go-idoc2txt\invo\input\"
+    outDir="c:\c_portab\01_rb\ProgramData\go-idoc2txt\invo\output\"
+    inpFilter="!(*processed*)"
+    inpName="rundt+idocn+docno+docdt+'inp'+'processed'"
+    outName="rundt+idocn+docno+docdt+'out'"
+  />
+</config>

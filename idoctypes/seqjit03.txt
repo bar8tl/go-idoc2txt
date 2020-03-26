@@ -1,0 +1,2011 @@
+BEGIN_RECORD_SECTION
+  BEGIN_CONTROL_RECORD
+    BEGIN_FIELDS
+      NAME                TABNAM
+      TEXT                Name of Table Structure
+      TYPE                CHARACTER
+      LENGTH              000010
+      FIELD_POS           0001
+      CHARACTER_FIRST     000001
+      CHARACTER_LAST      000010
+
+      NAME                MANDT
+      TEXT                Client
+      TYPE                CHARACTER
+      LENGTH              000003
+      FIELD_POS           0002
+      CHARACTER_FIRST     000011
+      CHARACTER_LAST      000013
+
+      NAME                DOCNUM
+      TEXT                IDoc number
+      TYPE                CHARACTER
+      LENGTH              000016
+      FIELD_POS           0003
+      CHARACTER_FIRST     000014
+      CHARACTER_LAST      000029
+
+      NAME                DOCREL
+      TEXT                SAP Release for IDoc
+      TYPE                CHARACTER
+      LENGTH              000004
+      FIELD_POS           0004
+      CHARACTER_FIRST     000030
+      CHARACTER_LAST      000033
+
+      NAME                STATUS
+      TEXT                Status of IDoc
+      TYPE                CHARACTER
+      LENGTH              000002
+      FIELD_POS           0005
+      CHARACTER_FIRST     000034
+      CHARACTER_LAST      000035
+
+      NAME                DIRECT
+      TEXT                Direction
+      TYPE                CHARACTER
+      LENGTH              000001
+      FIELD_POS           0006
+      CHARACTER_FIRST     000036
+      CHARACTER_LAST      000036
+
+      NAME                OUTMOD
+      TEXT                Output mode
+      TYPE                CHARACTER
+      LENGTH              000001
+      FIELD_POS           0007
+      CHARACTER_FIRST     000037
+      CHARACTER_LAST      000037
+
+      NAME                EXPRSS
+      TEXT                Overriding in inbound processing
+      TYPE                CHARACTER
+      LENGTH              000001
+      FIELD_POS           0008
+      CHARACTER_FIRST     000038
+      CHARACTER_LAST      000038
+
+      NAME                TEST
+      TEXT                Test flag
+      TYPE                CHARACTER
+      LENGTH              000001
+      FIELD_POS           0009
+      CHARACTER_FIRST     000039
+      CHARACTER_LAST      000039
+
+      NAME                IDOCTYP
+      TEXT                Name of basic type
+      TYPE                CHARACTER
+      LENGTH              000030
+      FIELD_POS           0010
+      CHARACTER_FIRST     000040
+      CHARACTER_LAST      000069
+
+      NAME                CIMTYP
+      TEXT                Extension (defined by customer)
+      TYPE                CHARACTER
+      LENGTH              000030
+      FIELD_POS           0011
+      CHARACTER_FIRST     000070
+      CHARACTER_LAST      000099
+
+      NAME                MESTYP
+      TEXT                Message type
+      TYPE                CHARACTER
+      LENGTH              000030
+      FIELD_POS           0012
+      CHARACTER_FIRST     000100
+      CHARACTER_LAST      000129
+
+      NAME                MESCOD
+      TEXT                Message code
+      TYPE                CHARACTER
+      LENGTH              000003
+      FIELD_POS           0013
+      CHARACTER_FIRST     000130
+      CHARACTER_LAST      000132
+
+      NAME                MESFCT
+      TEXT                Message Function
+      TYPE                CHARACTER
+      LENGTH              000003
+      FIELD_POS           0014
+      CHARACTER_FIRST     000133
+      CHARACTER_LAST      000135
+
+      NAME                STD
+      TEXT                EDI standard, flag
+      TYPE                CHARACTER
+      LENGTH              000001
+      FIELD_POS           0015
+      CHARACTER_FIRST     000136
+      CHARACTER_LAST      000136
+
+      NAME                STDVRS
+      TEXT                EDI standard, version and release
+      TYPE                CHARACTER
+      LENGTH              000006
+      FIELD_POS           0016
+      CHARACTER_FIRST     000137
+      CHARACTER_LAST      000142
+
+      NAME                STDMES
+      TEXT                EDI message type
+      TYPE                CHARACTER
+      LENGTH              000006
+      FIELD_POS           0017
+      CHARACTER_FIRST     000143
+      CHARACTER_LAST      000148
+
+      NAME                SNDPOR
+      TEXT                Sender port (SAP System, external subsystem)
+      TYPE                CHARACTER
+      LENGTH              000010
+      FIELD_POS           0018
+      CHARACTER_FIRST     000149
+      CHARACTER_LAST      000158
+
+      NAME                SNDPRT
+      TEXT                Partner type of sender
+      TYPE                CHARACTER
+      LENGTH              000002
+      FIELD_POS           0019
+      CHARACTER_FIRST     000159
+      CHARACTER_LAST      000160
+
+      NAME                SNDPFC
+      TEXT                Partner Function of Sender
+      TYPE                CHARACTER
+      LENGTH              000002
+      FIELD_POS           0020
+      CHARACTER_FIRST     000161
+      CHARACTER_LAST      000162
+
+      NAME                SNDPRN
+      TEXT                Partner Number of Sender
+      TYPE                CHARACTER
+      LENGTH              000010
+      FIELD_POS           0021
+      CHARACTER_FIRST     000163
+      CHARACTER_LAST      000172
+
+      NAME                SNDSAD
+      TEXT                Sender address (SADR)
+      TYPE                CHARACTER
+      LENGTH              000021
+      FIELD_POS           0022
+      CHARACTER_FIRST     000173
+      CHARACTER_LAST      000193
+
+      NAME                SNDLAD
+      TEXT                Logical address of sender
+      TYPE                CHARACTER
+      LENGTH              000070
+      FIELD_POS           0023
+      CHARACTER_FIRST     000194
+      CHARACTER_LAST      000263
+
+      NAME                RCVPOR
+      TEXT                Receiver port
+      TYPE                CHARACTER
+      LENGTH              000010
+      FIELD_POS           0024
+      CHARACTER_FIRST     000264
+      CHARACTER_LAST      000273
+
+      NAME                RCVPRT
+      TEXT                Partner Type of Receiver
+      TYPE                CHARACTER
+      LENGTH              000002
+      FIELD_POS           0025
+      CHARACTER_FIRST     000274
+      CHARACTER_LAST      000275
+
+      NAME                RCVPFC
+      TEXT                Partner function of recipient
+      TYPE                CHARACTER
+      LENGTH              000002
+      FIELD_POS           0026
+      CHARACTER_FIRST     000276
+      CHARACTER_LAST      000277
+
+      NAME                RCVPRN
+      TEXT                Partner Number of Receiver
+      TYPE                CHARACTER
+      LENGTH              000010
+      FIELD_POS           0027
+      CHARACTER_FIRST     000278
+      CHARACTER_LAST      000287
+
+      NAME                RCVSAD
+      TEXT                Recipient address (SADR)
+      TYPE                CHARACTER
+      LENGTH              000021
+      FIELD_POS           0028
+      CHARACTER_FIRST     000288
+      CHARACTER_LAST      000308
+
+      NAME                RCVLAD
+      TEXT                Logical address of recipient
+      TYPE                CHARACTER
+      LENGTH              000070
+      FIELD_POS           0029
+      CHARACTER_FIRST     000309
+      CHARACTER_LAST      000378
+
+      NAME                CREDAT
+      TEXT                Created On
+      TYPE                CHARACTER
+      LENGTH              000008
+      FIELD_POS           0030
+      CHARACTER_FIRST     000379
+      CHARACTER_LAST      000386
+
+      NAME                CRETIM
+      TEXT                Created at
+      TYPE                CHARACTER
+      LENGTH              000006
+      FIELD_POS           0031
+      CHARACTER_FIRST     000387
+      CHARACTER_LAST      000392
+
+      NAME                REFINT
+      TEXT                Transmission file (EDI Interchange)
+      TYPE                CHARACTER
+      LENGTH              000014
+      FIELD_POS           0032
+      CHARACTER_FIRST     000393
+      CHARACTER_LAST      000406
+
+      NAME                REFGRP
+      TEXT                Message group (EDI Message Group)
+      TYPE                CHARACTER
+      LENGTH              000014
+      FIELD_POS           0033
+      CHARACTER_FIRST     000407
+      CHARACTER_LAST      000420
+
+      NAME                REFMES
+      TEXT                Message (EDI Message)
+      TYPE                CHARACTER
+      LENGTH              000014
+      FIELD_POS           0034
+      CHARACTER_FIRST     000421
+      CHARACTER_LAST      000434
+
+      NAME                ARCKEY
+      TEXT                Key for external message archive
+      TYPE                CHARACTER
+      LENGTH              000070
+      FIELD_POS           0035
+      CHARACTER_FIRST     000435
+      CHARACTER_LAST      000504
+
+      NAME                SERIAL
+      TEXT                Serialization
+      TYPE                CHARACTER
+      LENGTH              000020
+      FIELD_POS           0036
+      CHARACTER_FIRST     000505
+      CHARACTER_LAST      000524
+    END_FIELDS
+  END_CONTROL_RECORD
+  BEGIN_DATA_RECORD
+    BEGIN_FIELDS
+      NAME                SEGNAM
+      TEXT                Segment (external name)
+      TYPE                CHARACTER
+      LENGTH              000030
+      FIELD_POS           0001
+      CHARACTER_FIRST     000001
+      CHARACTER_LAST      000030
+
+      NAME                MANDT
+      TEXT                Client
+      TYPE                CHARACTER
+      LENGTH              000003
+      FIELD_POS           0002
+      CHARACTER_FIRST     000031
+      CHARACTER_LAST      000033
+
+      NAME                DOCNUM
+      TEXT                IDoc number
+      TYPE                CHARACTER
+      LENGTH              000016
+      FIELD_POS           0003
+      CHARACTER_FIRST     000034
+      CHARACTER_LAST      000049
+
+      NAME                SEGNUM
+      TEXT                Segment Number
+      TYPE                CHARACTER
+      LENGTH              000006
+      FIELD_POS           0004
+      CHARACTER_FIRST     000050
+      CHARACTER_LAST      000055
+
+      NAME                PSGNUM
+      TEXT                Number of superior parent segment
+      TYPE                CHARACTER
+      LENGTH              000006
+      FIELD_POS           0005
+      CHARACTER_FIRST     000056
+      CHARACTER_LAST      000061
+
+      NAME                HLEVEL
+      TEXT                Hierarchy level of SAP segment
+      TYPE                CHARACTER
+      LENGTH              000002
+      FIELD_POS           0006
+      CHARACTER_FIRST     000062
+      CHARACTER_LAST      000063
+
+      NAME                SDATA
+      TEXT                Application data
+      TYPE                CHARACTER
+      LENGTH              001000
+      FIELD_POS           0007
+      CHARACTER_FIRST     000064
+      CHARACTER_LAST      001063
+    END_FIELDS
+  END_DATA_RECORD
+  BEGIN_STATUS_RECORD
+    BEGIN_FIELDS
+      NAME                TABNAM
+      TEXT                Name of Table Structure
+      TYPE                CHARACTER
+      LENGTH              000010
+      FIELD_POS           0001
+      CHARACTER_FIRST     000001
+      CHARACTER_LAST      000010
+
+      NAME                MANDT
+      TEXT                Client
+      TYPE                CHARACTER
+      LENGTH              000003
+      FIELD_POS           0002
+      CHARACTER_FIRST     000011
+      CHARACTER_LAST      000013
+
+      NAME                DOCNUM
+      TEXT                IDoc number
+      TYPE                CHARACTER
+      LENGTH              000016
+      FIELD_POS           0003
+      CHARACTER_FIRST     000014
+      CHARACTER_LAST      000029
+
+      NAME                LOGDAT
+      TEXT                Date of status information
+      TYPE                CHARACTER
+      LENGTH              000008
+      FIELD_POS           0004
+      CHARACTER_FIRST     000030
+      CHARACTER_LAST      000037
+
+      NAME                LOGTIM
+      TEXT                Time of status information
+      TYPE                CHARACTER
+      LENGTH              000006
+      FIELD_POS           0005
+      CHARACTER_FIRST     000038
+      CHARACTER_LAST      000043
+
+      NAME                STATUS
+      TEXT                Status of IDoc
+      TYPE                CHARACTER
+      LENGTH              000002
+      FIELD_POS           0006
+      CHARACTER_FIRST     000044
+      CHARACTER_LAST      000045
+
+      NAME                STAMQU
+      TEXT                Status for message in status record
+      TYPE                CHARACTER
+      LENGTH              000003
+      FIELD_POS           0007
+      CHARACTER_FIRST     000046
+      CHARACTER_LAST      000048
+
+      NAME                STAMID
+      TEXT                Message for status notification: Message class
+      TYPE                CHARACTER
+      LENGTH              000020
+      FIELD_POS           0008
+      CHARACTER_FIRST     000049
+      CHARACTER_LAST      000068
+
+      NAME                STAMNO
+      TEXT                Message number for status message
+      TYPE                CHARACTER
+      LENGTH              000003
+      FIELD_POS           0009
+      CHARACTER_FIRST     000069
+      CHARACTER_LAST      000071
+
+      NAME                STATYP
+      TEXT                ABAP message type (A, W, E, S, I) in status message
+      TYPE                CHARACTER
+      LENGTH              000001
+      FIELD_POS           0010
+      CHARACTER_FIRST     000072
+      CHARACTER_LAST      000072
+
+      NAME                STAPA1
+      TEXT                First parameter for message in status record
+      TYPE                CHARACTER
+      LENGTH              000050
+      FIELD_POS           0011
+      CHARACTER_FIRST     000073
+      CHARACTER_LAST      000122
+
+      NAME                STAPA2
+      TEXT                Second parameter for message in status record
+      TYPE                CHARACTER
+      LENGTH              000050
+      FIELD_POS           0012
+      CHARACTER_FIRST     000123
+      CHARACTER_LAST      000172
+
+      NAME                STAPA3
+      TEXT                Third parameter for message in status record
+      TYPE                CHARACTER
+      LENGTH              000050
+      FIELD_POS           0013
+      CHARACTER_FIRST     000173
+      CHARACTER_LAST      000222
+
+      NAME                STAPA4
+      TEXT                Fourth parameter for message in status record
+      TYPE                CHARACTER
+      LENGTH              000050
+      FIELD_POS           0014
+      CHARACTER_FIRST     000223
+      CHARACTER_LAST      000272
+
+      NAME                STATXT
+      TEXT                Status text
+      TYPE                CHARACTER
+      LENGTH              000070
+      FIELD_POS           0015
+      CHARACTER_FIRST     000273
+      CHARACTER_LAST      000342
+
+      NAME                UNAME
+      TEXT                User Name
+      TYPE                CHARACTER
+      LENGTH              000012
+      FIELD_POS           0016
+      CHARACTER_FIRST     000343
+      CHARACTER_LAST      000354
+
+      NAME                REPID
+      TEXT                Program
+      TYPE                CHARACTER
+      LENGTH              000030
+      FIELD_POS           0017
+      CHARACTER_FIRST     000355
+      CHARACTER_LAST      000384
+
+      NAME                ROUTID
+      TEXT                Subroutine (routine, function module)
+      TYPE                CHARACTER
+      LENGTH              000030
+      FIELD_POS           0018
+      CHARACTER_FIRST     000385
+      CHARACTER_LAST      000414
+
+      NAME                SEGNUM
+      TEXT                Segment Number
+      TYPE                CHARACTER
+      LENGTH              000006
+      FIELD_POS           0019
+      CHARACTER_FIRST     000415
+      CHARACTER_LAST      000420
+
+      NAME                SEGFLD
+      TEXT                Segment field
+      TYPE                CHARACTER
+      LENGTH              000030
+      FIELD_POS           0020
+      CHARACTER_FIRST     000421
+      CHARACTER_LAST      000450
+
+      NAME                REFINT
+      TEXT                Transmission file (EDI Interchange)
+      TYPE                CHARACTER
+      LENGTH              000014
+      FIELD_POS           0021
+      CHARACTER_FIRST     000451
+      CHARACTER_LAST      000464
+
+      NAME                REFGRP
+      TEXT                Message group (EDI Message Group)
+      TYPE                CHARACTER
+      LENGTH              000014
+      FIELD_POS           0022
+      CHARACTER_FIRST     000465
+      CHARACTER_LAST      000478
+
+      NAME                REFMES
+      TEXT                Message (EDI Message)
+      TYPE                CHARACTER
+      LENGTH              000014
+      FIELD_POS           0023
+      CHARACTER_FIRST     000479
+      CHARACTER_LAST      000492
+
+      NAME                ARCKEY
+      TEXT                Key for external message archive
+      TYPE                CHARACTER
+      LENGTH              000070
+      FIELD_POS           0024
+      CHARACTER_FIRST     000493
+      CHARACTER_LAST      000562
+    END_FIELDS
+  END_STATUS_RECORD
+END_RECORD_SECTION
+BEGIN_SEGMENT_SECTION
+  BEGIN_IDOC          SEQJIT03
+    BEGIN_GROUP                  1
+      LEVEL               01
+      STATUS              MANDATORY
+      LOOPMIN             0000000001
+      LOOPMAX             0000000001
+      BEGIN_SEGMENT       E2KSJCL001
+        SEGMENTTYPE         E1KSJCL
+        LEVEL               01
+        STATUS              MANDATORY
+        LOOPMIN             0000000001
+        LOOPMAX             0000000001
+        BEGIN_FIELDS
+          NAME                PARTN
+          TEXT                Partner number
+          TYPE                CHARACTER
+          LENGTH              000017
+          FIELD_POS           0001
+          CHARACTER_FIRST     000064
+          CHARACTER_LAST      000080
+
+          NAME                LIFNR
+          TEXT                Vendor number at customer location
+          TYPE                CHARACTER
+          LENGTH              000017
+          FIELD_POS           0002
+          CHARACTER_FIRST     000081
+          CHARACTER_LAST      000097
+
+          NAME                KNREF
+          TEXT                Customer description of partner (plant, storage location)
+          TYPE                CHARACTER
+          LENGTH              000030
+          FIELD_POS           0003
+          CHARACTER_FIRST     000098
+          CHARACTER_LAST      000127
+
+          NAME                PRODN
+          TEXT                External Call Number
+          TYPE                CHARACTER
+          LENGTH              000035
+          FIELD_POS           0004
+          CHARACTER_FIRST     000128
+          CHARACTER_LAST      000162
+
+          NAME                SEQNR
+          TEXT                External Sequence Number
+          TYPE                CHARACTER
+          LENGTH              000035
+          FIELD_POS           0005
+          CHARACTER_FIRST     000163
+          CHARACTER_LAST      000197
+
+          NAME                VETYP
+          TEXT                Additional Information 1
+          TYPE                CHARACTER
+          LENGTH              000035
+          FIELD_POS           0006
+          CHARACTER_FIRST     000198
+          CHARACTER_LAST      000232
+
+          NAME                VEHID
+          TEXT                Additional Information 2
+          TYPE                CHARACTER
+          LENGTH              000035
+          FIELD_POS           0007
+          CHARACTER_FIRST     000233
+          CHARACTER_LAST      000267
+
+          NAME                SSPEZ
+          TEXT                Additional Information 3
+          TYPE                CHARACTER
+          LENGTH              000035
+          FIELD_POS           0008
+          CHARACTER_FIRST     000268
+          CHARACTER_LAST      000302
+
+          NAME                ABLAD
+          TEXT                Unloading Point
+          TYPE                CHARACTER
+          LENGTH              000035
+          FIELD_POS           0009
+          CHARACTER_FIRST     000303
+          CHARACTER_LAST      000337
+
+          NAME                FLDPO
+          TEXT                Assembly location of parts group at customer site
+          TYPE                CHARACTER
+          LENGTH              000035
+          FIELD_POS           0010
+          CHARACTER_FIRST     000338
+          CHARACTER_LAST      000372
+
+          NAME                EDATUM
+          TEXT                Date of External Status
+          TYPE                CHARACTER
+          LENGTH              000008
+          FIELD_POS           0011
+          CHARACTER_FIRST     000373
+          CHARACTER_LAST      000380
+
+          NAME                EZEIT
+          TEXT                External Status Time
+          TYPE                CHARACTER
+          LENGTH              000006
+          FIELD_POS           0012
+          CHARACTER_FIRST     000381
+          CHARACTER_LAST      000386
+
+          NAME                EXSTI
+          TEXT                Transmitted External Status Information
+          TYPE                CHARACTER
+          LENGTH              000035
+          FIELD_POS           0013
+          CHARACTER_FIRST     000387
+          CHARACTER_LAST      000421
+
+          NAME                TRMNEW
+          TEXT                New Transmission Number
+          TYPE                CHARACTER
+          LENGTH              000017
+          FIELD_POS           0014
+          CHARACTER_FIRST     000422
+          CHARACTER_LAST      000438
+
+          NAME                TRMOLD
+          TEXT                Old Transmission Number
+          TYPE                CHARACTER
+          LENGTH              000017
+          FIELD_POS           0015
+          CHARACTER_FIRST     000439
+          CHARACTER_LAST      000455
+
+          NAME                TRMDAY
+          TEXT                Sender's Transfer Date
+          TYPE                CHARACTER
+          LENGTH              000008
+          FIELD_POS           0016
+          CHARACTER_FIRST     000456
+          CHARACTER_LAST      000463
+
+          NAME                TRMTIM
+          TEXT                Sender's Transfer Time
+          TYPE                CHARACTER
+          LENGTH              000006
+          FIELD_POS           0017
+          CHARACTER_FIRST     000464
+          CHARACTER_LAST      000469
+
+          NAME                CHNGSEQ
+          TEXT                Change sequence
+          TYPE                CHARACTER
+          LENGTH              000035
+          FIELD_POS           0018
+          CHARACTER_FIRST     000470
+          CHARACTER_LAST      000504
+
+          NAME                REFNR
+          TEXT                Reference Number of JIT Call
+          TYPE                CHARACTER
+          LENGTH              000035
+          FIELD_POS           0019
+          CHARACTER_FIRST     000505
+          CHARACTER_LAST      000539
+
+          NAME                FZID
+          TEXT                Additional Information 2
+          TYPE                CHARACTER
+          LENGTH              000035
+          FIELD_POS           0020
+          CHARACTER_FIRST     000540
+          CHARACTER_LAST      000574
+
+          NAME                PDATUM
+          TEXT                Planned Shipping Date
+          TYPE                CHARACTER
+          LENGTH              000008
+          FIELD_POS           0021
+          CHARACTER_FIRST     000575
+          CHARACTER_LAST      000582
+
+          NAME                PZEIT
+          TEXT                Planned Shipping Time
+          TYPE                CHARACTER
+          LENGTH              000006
+          FIELD_POS           0022
+          CHARACTER_FIRST     000583
+          CHARACTER_LAST      000588
+
+          NAME                ABTYP
+          TEXT                Call Type
+          TYPE                CHARACTER
+          LENGTH              000001
+          FIELD_POS           0023
+          CHARACTER_FIRST     000589
+          CHARACTER_LAST      000589
+
+          NAME                RDATUM
+          TEXT                Planned Requirements Date
+          TYPE                CHARACTER
+          LENGTH              000008
+          FIELD_POS           0024
+          CHARACTER_FIRST     000590
+          CHARACTER_LAST      000597
+
+          NAME                RZEIT
+          TEXT                Planned Requirements Time
+          TYPE                CHARACTER
+          LENGTH              000006
+          FIELD_POS           0025
+          CHARACTER_FIRST     000598
+          CHARACTER_LAST      000603
+
+          NAME                RTY01
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0026
+          CHARACTER_FIRST     000604
+          CHARACTER_LAST      000605
+
+          NAME                RFN01
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0027
+          CHARACTER_FIRST     000606
+          CHARACTER_LAST      000630
+
+          NAME                RTY02
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0028
+          CHARACTER_FIRST     000631
+          CHARACTER_LAST      000632
+
+          NAME                RFN02
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0029
+          CHARACTER_FIRST     000633
+          CHARACTER_LAST      000657
+
+          NAME                RTY03
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0030
+          CHARACTER_FIRST     000658
+          CHARACTER_LAST      000659
+
+          NAME                RFN03
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0031
+          CHARACTER_FIRST     000660
+          CHARACTER_LAST      000684
+
+          NAME                PRODN_TO
+          TEXT                External Call Number End Value of Interval
+          TYPE                CHARACTER
+          LENGTH              000035
+          FIELD_POS           0032
+          CHARACTER_FIRST     000685
+          CHARACTER_LAST      000719
+        END_FIELDS
+      END_SEGMENT
+      BEGIN_SEGMENT       E2EDKR1000
+        SEGMENTTYPE         E1EDKR1
+        LEVEL               02
+        STATUS              OPTIONAL
+        LOOPMIN             0000000001
+        LOOPMAX             0000000001
+        BEGIN_FIELDS
+          NAME                RTY01
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0001
+          CHARACTER_FIRST     000064
+          CHARACTER_LAST      000065
+
+          NAME                RFN01
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0002
+          CHARACTER_FIRST     000066
+          CHARACTER_LAST      000090
+
+          NAME                RTY02
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0003
+          CHARACTER_FIRST     000091
+          CHARACTER_LAST      000092
+
+          NAME                RFN02
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0004
+          CHARACTER_FIRST     000093
+          CHARACTER_LAST      000117
+
+          NAME                RTY03
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0005
+          CHARACTER_FIRST     000118
+          CHARACTER_LAST      000119
+
+          NAME                RFN03
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0006
+          CHARACTER_FIRST     000120
+          CHARACTER_LAST      000144
+
+          NAME                RTY04
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0007
+          CHARACTER_FIRST     000145
+          CHARACTER_LAST      000146
+
+          NAME                RFN04
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0008
+          CHARACTER_FIRST     000147
+          CHARACTER_LAST      000171
+
+          NAME                RTY05
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0009
+          CHARACTER_FIRST     000172
+          CHARACTER_LAST      000173
+
+          NAME                RFN05
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0010
+          CHARACTER_FIRST     000174
+          CHARACTER_LAST      000198
+
+          NAME                RTY06
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0011
+          CHARACTER_FIRST     000199
+          CHARACTER_LAST      000200
+
+          NAME                RFN06
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0012
+          CHARACTER_FIRST     000201
+          CHARACTER_LAST      000225
+
+          NAME                RTY07
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0013
+          CHARACTER_FIRST     000226
+          CHARACTER_LAST      000227
+
+          NAME                RFN07
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0014
+          CHARACTER_FIRST     000228
+          CHARACTER_LAST      000252
+
+          NAME                RTY08
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0015
+          CHARACTER_FIRST     000253
+          CHARACTER_LAST      000254
+
+          NAME                RFN08
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0016
+          CHARACTER_FIRST     000255
+          CHARACTER_LAST      000279
+
+          NAME                RTY09
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0017
+          CHARACTER_FIRST     000280
+          CHARACTER_LAST      000281
+
+          NAME                RFN09
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0018
+          CHARACTER_FIRST     000282
+          CHARACTER_LAST      000306
+
+          NAME                RTY10
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0019
+          CHARACTER_FIRST     000307
+          CHARACTER_LAST      000308
+
+          NAME                RFN10
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0020
+          CHARACTER_FIRST     000309
+          CHARACTER_LAST      000333
+
+          NAME                RTY11
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0021
+          CHARACTER_FIRST     000334
+          CHARACTER_LAST      000335
+
+          NAME                RFN11
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0022
+          CHARACTER_FIRST     000336
+          CHARACTER_LAST      000360
+
+          NAME                RTY12
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0023
+          CHARACTER_FIRST     000361
+          CHARACTER_LAST      000362
+
+          NAME                RFN12
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0024
+          CHARACTER_FIRST     000363
+          CHARACTER_LAST      000387
+
+          NAME                RTY13
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0025
+          CHARACTER_FIRST     000388
+          CHARACTER_LAST      000389
+
+          NAME                RFN13
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0026
+          CHARACTER_FIRST     000390
+          CHARACTER_LAST      000414
+
+          NAME                RTY14
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0027
+          CHARACTER_FIRST     000415
+          CHARACTER_LAST      000416
+
+          NAME                RFN14
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0028
+          CHARACTER_FIRST     000417
+          CHARACTER_LAST      000441
+
+          NAME                RTY15
+          TEXT                Type of Reference Number
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0029
+          CHARACTER_FIRST     000442
+          CHARACTER_LAST      000443
+
+          NAME                RFN15
+          TEXT                Reference Number / Reference Text for JIT Call
+          TYPE                CHARACTER
+          LENGTH              000025
+          FIELD_POS           0030
+          CHARACTER_FIRST     000444
+          CHARACTER_LAST      000468
+        END_FIELDS
+      END_SEGMENT
+      BEGIN_SEGMENT         E2EDK11001
+        SEGMENTTYPE         E1EDK11
+        LEVEL               02
+        STATUS              OPTIONAL
+        LOOPMIN             0000000001
+        LOOPMAX             0000000001
+        BEGIN_FIELDS
+          NAME                TDNAME
+          TEXT                EDI text function
+          TYPE                CHARACTER
+          LENGTH              000004
+          FIELD_POS           0001
+          CHARACTER_FIRST     000064
+          CHARACTER_LAST      000067
+
+          NAME                SPRAS
+          TEXT                Language Key
+          TYPE                CHARACTER
+          LENGTH              000003
+          FIELD_POS           0002
+          CHARACTER_FIRST     000068
+          CHARACTER_LAST      000070
+
+          NAME                TXTLF
+          TEXT                Additional text (sequential number)
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0003
+          CHARACTER_FIRST     000071
+          CHARACTER_LAST      000072
+
+          NAME                TXT01
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0004
+          CHARACTER_FIRST     000073
+          CHARACTER_LAST      000142
+
+          NAME                TXT02
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0005
+          CHARACTER_FIRST     000143
+          CHARACTER_LAST      000212
+
+          NAME                TXT03
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0006
+          CHARACTER_FIRST     000213
+          CHARACTER_LAST      000282
+
+          NAME                TXT04
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0007
+          CHARACTER_FIRST     000283
+          CHARACTER_LAST      000352
+
+          NAME                TXT05
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0008
+          CHARACTER_FIRST     000353
+          CHARACTER_LAST      000422
+
+          NAME                TXT06
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0009
+          CHARACTER_FIRST     000423
+          CHARACTER_LAST      000492
+
+          NAME                TXT07
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0010
+          CHARACTER_FIRST     000493
+          CHARACTER_LAST      000562
+
+          NAME                TXT08
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0011
+          CHARACTER_FIRST     000563
+          CHARACTER_LAST      000632
+
+          NAME                TXT09
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0012
+          CHARACTER_FIRST     000633
+          CHARACTER_LAST      000702
+
+          NAME                TXT10
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0013
+          CHARACTER_FIRST     000703
+          CHARACTER_LAST      000772
+
+          NAME                TXT11
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0014
+          CHARACTER_FIRST     000773
+          CHARACTER_LAST      000842
+
+          NAME                TXT12
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0015
+          CHARACTER_FIRST     000843
+          CHARACTER_LAST      000912
+
+          NAME                TXT13
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0016
+          CHARACTER_FIRST     000913
+          CHARACTER_LAST      000982
+
+          NAME                TXT14
+          TEXT                Text continued
+          TYPE                CHARACTER
+          LENGTH              000070
+          FIELD_POS           0017
+          CHARACTER_FIRST     000983
+          CHARACTER_LAST      001052
+
+          NAME                TSSPRAS_ISO
+          TEXT                2-Character SAP Language Code
+          TYPE                CHARACTER
+          LENGTH              000002
+          FIELD_POS           0018
+          CHARACTER_FIRST     001053
+          CHARACTER_LAST      001054
+        END_FIELDS
+      END_SEGMENT
+      BEGIN_GROUP                    2
+        LEVEL               02
+        STATUS              OPTIONAL
+        LOOPMIN             0000000001
+        LOOPMAX             0000001000
+        BEGIN_SEGMENT       E2PSJCL003
+          SEGMENTTYPE         E1PSJCL
+          LEVEL               02
+          STATUS              MANDATORY
+          LOOPMIN             0000000001
+          LOOPMAX             0000000001
+          BEGIN_FIELDS
+            NAME                KDMAT
+            TEXT                Material belonging to the customer
+            TYPE                CHARACTER
+            LENGTH              000035
+            FIELD_POS           0001
+            CHARACTER_FIRST     000064
+            CHARACTER_LAST      000098
+
+            NAME                IDNLF
+            TEXT                Material Number Used by Vendor
+            TYPE                CHARACTER
+            LENGTH              000035
+            FIELD_POS           0002
+            CHARACTER_FIRST     000099
+            CHARACTER_LAST      000133
+
+            NAME                LIUMF
+            TEXT                Components Groups Material (Delivery Scope)
+            TYPE                CHARACTER
+            LENGTH              000035
+            FIELD_POS           0003
+            CHARACTER_FIRST     000134
+            CHARACTER_LAST      000168
+
+            NAME                ARKTX
+            TEXT                Short text for sales order item
+            TYPE                CHARACTER
+            LENGTH              000040
+            FIELD_POS           0004
+            CHARACTER_FIRST     000169
+            CHARACTER_LAST      000208
+
+            NAME                VMENG
+            TEXT                Call Quantity in Sales Unit of Measure
+            TYPE                CHARACTER
+            LENGTH              000017
+            FIELD_POS           0005
+            CHARACTER_FIRST     000209
+            CHARACTER_LAST      000225
+
+            NAME                VRKME
+            TEXT                Sales Unit
+            TYPE                CHARACTER
+            LENGTH              000003
+            FIELD_POS           0006
+            CHARACTER_FIRST     000226
+            CHARACTER_LAST      000228
+
+            NAME                ABLAD
+            TEXT                Unloading Point
+            TYPE                CHARACTER
+            LENGTH              000035
+            FIELD_POS           0007
+            CHARACTER_FIRST     000229
+            CHARACTER_LAST      000263
+
+            NAME                FLDPO
+            TEXT                Assembly location of parts group at customer site
+            TYPE                CHARACTER
+            LENGTH              000035
+            FIELD_POS           0008
+            CHARACTER_FIRST     000264
+            CHARACTER_LAST      000298
+
+            NAME                EDATUM
+            TEXT                Date of External Status
+            TYPE                CHARACTER
+            LENGTH              000008
+            FIELD_POS           0009
+            CHARACTER_FIRST     000299
+            CHARACTER_LAST      000306
+
+            NAME                EZEIT
+            TEXT                External Status Time
+            TYPE                CHARACTER
+            LENGTH              000006
+            FIELD_POS           0010
+            CHARACTER_FIRST     000307
+            CHARACTER_LAST      000312
+
+            NAME                EXSTI
+            TEXT                Transmitted External Status Information
+            TYPE                CHARACTER
+            LENGTH              000035
+            FIELD_POS           0011
+            CHARACTER_FIRST     000313
+            CHARACTER_LAST      000347
+
+            NAME                CHNGLEV
+            TEXT                Data Element Type CHAR Length 35
+            TYPE                CHARACTER
+            LENGTH              000035
+            FIELD_POS           0012
+            CHARACTER_FIRST     000348
+            CHARACTER_LAST      000382
+
+            NAME                PDATUM
+            TEXT                Planned Shipping Date
+            TYPE                CHARACTER
+            LENGTH              000008
+            FIELD_POS           0013
+            CHARACTER_FIRST     000383
+            CHARACTER_LAST      000390
+
+            NAME                PZEIT
+            TEXT                Planned Shipping Time
+            TYPE                CHARACTER
+            LENGTH              000006
+            FIELD_POS           0014
+            CHARACTER_FIRST     000391
+            CHARACTER_LAST      000396
+
+            NAME                RDATUM
+            TEXT                Planned Requirements Date
+            TYPE                CHARACTER
+            LENGTH              000008
+            FIELD_POS           0015
+            CHARACTER_FIRST     000397
+            CHARACTER_LAST      000404
+
+            NAME                RZEIT
+            TEXT                Planned Requirements Time
+            TYPE                CHARACTER
+            LENGTH              000006
+            FIELD_POS           0016
+            CHARACTER_FIRST     000405
+            CHARACTER_LAST      000410
+
+            NAME                GRPIN
+            TEXT                Grouping and Sequencing Information Components Group
+            TYPE                CHARACTER
+            LENGTH              000020
+            FIELD_POS           0017
+            CHARACTER_FIRST     000411
+            CHARACTER_LAST      000430
+
+            NAME                GRIND
+            TEXT                Index for Grouping and Sequencing Information
+            TYPE                CHARACTER
+            LENGTH              000006
+            FIELD_POS           0018
+            CHARACTER_FIRST     000431
+            CHARACTER_LAST      000436
+
+            NAME                LIUMF_EXTERNAL
+            TEXT                Long Material Number for Field LIUMF
+            TYPE                CHARACTER
+            LENGTH              000040
+            FIELD_POS           0019
+            CHARACTER_FIRST     000437
+            CHARACTER_LAST      000476
+
+            NAME                LIUMF_VERSION
+            TEXT                Version Number for Field LIUMF
+            TYPE                CHARACTER
+            LENGTH              000010
+            FIELD_POS           0020
+            CHARACTER_FIRST     000477
+            CHARACTER_LAST      000486
+
+            NAME                LIUMF_GUID
+            TEXT                External GUID for Field LIUMF
+            TYPE                CHARACTER
+            LENGTH              000032
+            FIELD_POS           0021
+            CHARACTER_FIRST     000487
+            CHARACTER_LAST      000518
+
+            NAME                KDMAT_EXTERNAL
+            TEXT                Customer Material
+            TYPE                CHARACTER
+            LENGTH              000040
+            FIELD_POS           0022
+            CHARACTER_FIRST     000519
+            CHARACTER_LAST      000558
+
+            NAME                KDMAT_VERSION
+            TEXT                Customer Material
+            TYPE                CHARACTER
+            LENGTH              000010
+            FIELD_POS           0023
+            CHARACTER_FIRST     000559
+            CHARACTER_LAST      000568
+
+            NAME                KDMAT_GUID
+            TEXT                Customer Material
+            TYPE                CHARACTER
+            LENGTH              000032
+            FIELD_POS           0024
+            CHARACTER_FIRST     000569
+            CHARACTER_LAST      000600
+
+            NAME                IDNLF_EXTERNAL
+            TEXT                Material Number Used by Vendor
+            TYPE                CHARACTER
+            LENGTH              000040
+            FIELD_POS           0025
+            CHARACTER_FIRST     000601
+            CHARACTER_LAST      000640
+
+            NAME                IDNLF_VERSION
+            TEXT                Material Number Used by Vendor
+            TYPE                CHARACTER
+            LENGTH              000010
+            FIELD_POS           0026
+            CHARACTER_FIRST     000641
+            CHARACTER_LAST      000650
+
+            NAME                IDNLF_GUID
+            TEXT                Material Number Used by Vendor
+            TYPE                CHARACTER
+            LENGTH              000032
+            FIELD_POS           0027
+            CHARACTER_FIRST     000651
+            CHARACTER_LAST      000682
+
+            NAME                RTY01
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0028
+            CHARACTER_FIRST     000683
+            CHARACTER_LAST      000684
+
+            NAME                RFN01
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0029
+            CHARACTER_FIRST     000685
+            CHARACTER_LAST      000709
+
+            NAME                RTY02
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0030
+            CHARACTER_FIRST     000710
+            CHARACTER_LAST      000711
+
+            NAME                RFN02
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0031
+            CHARACTER_FIRST     000712
+            CHARACTER_LAST      000736
+
+            NAME                RTY03
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0032
+            CHARACTER_FIRST     000737
+            CHARACTER_LAST      000738
+
+            NAME                RFN03
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0033
+            CHARACTER_FIRST     000739
+            CHARACTER_LAST      000763
+
+            NAME                KTEXT
+            TEXT                Search term for product proposal
+            TYPE                CHARACTER
+            LENGTH              000040
+            FIELD_POS           0034
+            CHARACTER_FIRST     000764
+            CHARACTER_LAST      000803
+
+            NAME                JCPOS
+            TEXT                Call Item
+            TYPE                CHARACTER
+            LENGTH              000004
+            FIELD_POS           0035
+            CHARACTER_FIRST     000804
+            CHARACTER_LAST      000807
+
+            NAME                CHANGETYPE
+            TEXT                Type of Change
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0036
+            CHARACTER_FIRST     000808
+            CHARACTER_LAST      000809
+
+            NAME                LIUMF_LONG
+            TEXT                Components Groups Material (Delivery Scope)
+            TYPE                CHARACTER
+            LENGTH              000040
+            FIELD_POS           0037
+            CHARACTER_FIRST     000810
+            CHARACTER_LAST      000849
+          END_FIELDS
+        END_SEGMENT
+        BEGIN_SEGMENT       E2EDL12
+          SEGMENTTYPE         E1EDL12
+          LEVEL               03
+          STATUS              OPTIONAL
+          LOOPMIN             0000000001
+          LOOPMAX             0000099999
+          BEGIN_FIELDS
+            NAME                ATINN
+            TEXT                Internal characteristic
+            TYPE                CHARACTER
+            LENGTH              000010
+            FIELD_POS           0001
+            CHARACTER_FIRST     000064
+            CHARACTER_LAST      000073
+
+            NAME                ATNAM
+            TEXT                Characteristic Name
+            TYPE                CHARACTER
+            LENGTH              000030
+            FIELD_POS           0002
+            CHARACTER_FIRST     000074
+            CHARACTER_LAST      000103
+
+            NAME                ATBEZ
+            TEXT                Characteristic description
+            TYPE                CHARACTER
+            LENGTH              000030
+            FIELD_POS           0003
+            CHARACTER_FIRST     000104
+            CHARACTER_LAST      000133
+
+            NAME                ATWRT
+            TEXT                Characteristic Value
+            TYPE                CHARACTER
+            LENGTH              000030
+            FIELD_POS           0004
+            CHARACTER_FIRST     000134
+            CHARACTER_LAST      000163
+
+            NAME                ATWTB
+            TEXT                Characteristic value description
+            TYPE                CHARACTER
+            LENGTH              000030
+            FIELD_POS           0005
+            CHARACTER_FIRST     000164
+            CHARACTER_LAST      000193
+
+            NAME                EWAHR
+            TEXT                Tolerance from
+            TYPE                CHARACTER
+            LENGTH              000024
+            FIELD_POS           0006
+            CHARACTER_FIRST     000194
+            CHARACTER_LAST      000217
+          END_FIELDS
+        END_SEGMENT
+        BEGIN_SEGMENT         E2EDPR1000
+          SEGMENTTYPE         E1EDPR1
+          LEVEL               03
+          STATUS              OPTIONAL
+          LOOPMIN             0000000001
+          LOOPMAX             0000000001
+          BEGIN_FIELDS
+            NAME                RTY01
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0001
+            CHARACTER_FIRST     000064
+            CHARACTER_LAST      000065
+
+            NAME                RFN01
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0002
+            CHARACTER_FIRST     000066
+            CHARACTER_LAST      000090
+
+            NAME                RTY02
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0003
+            CHARACTER_FIRST     000091
+            CHARACTER_LAST      000092
+
+            NAME                RFN02
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0004
+            CHARACTER_FIRST     000093
+            CHARACTER_LAST      000117
+
+            NAME                RTY03
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0005
+            CHARACTER_FIRST     000118
+            CHARACTER_LAST      000119
+
+            NAME                RFN03
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0006
+            CHARACTER_FIRST     000120
+            CHARACTER_LAST      000144
+
+            NAME                RTY04
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0007
+            CHARACTER_FIRST     000145
+            CHARACTER_LAST      000146
+
+            NAME                RFN04
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0008
+            CHARACTER_FIRST     000147
+            CHARACTER_LAST      000171
+
+            NAME                RTY05
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0009
+            CHARACTER_FIRST     000172
+            CHARACTER_LAST      000173
+
+            NAME                RFN05
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0010
+            CHARACTER_FIRST     000174
+            CHARACTER_LAST      000198
+
+            NAME                RTY06
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0011
+            CHARACTER_FIRST     000199
+            CHARACTER_LAST      000200
+
+            NAME                RFN06
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0012
+            CHARACTER_FIRST     000201
+            CHARACTER_LAST      000225
+
+            NAME                RTY07
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0013
+            CHARACTER_FIRST     000226
+            CHARACTER_LAST      000227
+
+            NAME                RFN07
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0014
+            CHARACTER_FIRST     000228
+            CHARACTER_LAST      000252
+
+            NAME                RTY08
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0015
+            CHARACTER_FIRST     000253
+            CHARACTER_LAST      000254
+
+            NAME                RFN08
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0016
+            CHARACTER_FIRST     000255
+            CHARACTER_LAST      000279
+
+            NAME                RTY09
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0017
+            CHARACTER_FIRST     000280
+            CHARACTER_LAST      000281
+
+            NAME                RFN09
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0018
+            CHARACTER_FIRST     000282
+            CHARACTER_LAST      000306
+
+            NAME                RTY10
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0019
+            CHARACTER_FIRST     000307
+            CHARACTER_LAST      000308
+
+            NAME                RFN10
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0020
+            CHARACTER_FIRST     000309
+            CHARACTER_LAST      000333
+
+            NAME                RTY11
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0021
+            CHARACTER_FIRST     000334
+            CHARACTER_LAST      000335
+
+            NAME                RFN11
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0022
+            CHARACTER_FIRST     000336
+            CHARACTER_LAST      000360
+
+            NAME                RTY12
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0023
+            CHARACTER_FIRST     000361
+            CHARACTER_LAST      000362
+
+            NAME                RFN12
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0024
+            CHARACTER_FIRST     000363
+            CHARACTER_LAST      000387
+
+            NAME                RTY13
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0025
+            CHARACTER_FIRST     000388
+            CHARACTER_LAST      000389
+
+            NAME                RFN13
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0026
+            CHARACTER_FIRST     000390
+            CHARACTER_LAST      000414
+
+            NAME                RTY14
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0027
+            CHARACTER_FIRST     000415
+            CHARACTER_LAST      000416
+
+            NAME                RFN14
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0028
+            CHARACTER_FIRST     000417
+            CHARACTER_LAST      000441
+
+            NAME                RTY15
+            TEXT                Type of Reference Number
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0029
+            CHARACTER_FIRST     000442
+            CHARACTER_LAST      000443
+
+            NAME                RFN15
+            TEXT                Reference Number / Reference Text for JIT Call
+            TYPE                CHARACTER
+            LENGTH              000025
+            FIELD_POS           0030
+            CHARACTER_FIRST     000444
+            CHARACTER_LAST      000468
+          END_FIELDS
+        END_SEGMENT
+        BEGIN_SEGMENT         E2EDPT3000
+          SEGMENTTYPE         E1EDPT3
+          LEVEL               03
+          STATUS              OPTIONAL
+          LOOPMIN             0000000001
+          LOOPMAX             0000000001
+          BEGIN_FIELDS
+            NAME                TDNAME
+            TEXT                EDI text function
+            TYPE                CHARACTER
+            LENGTH              000004
+            FIELD_POS           0001
+            CHARACTER_FIRST     000064
+            CHARACTER_LAST      000067
+
+            NAME                SPRAS
+            TEXT                Language Key
+            TYPE                CHARACTER
+            LENGTH              000003
+            FIELD_POS           0002
+            CHARACTER_FIRST     000068
+            CHARACTER_LAST      000070
+
+            NAME                TXTLF
+            TEXT                Additional text (sequential number)
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0003
+            CHARACTER_FIRST     000071
+            CHARACTER_LAST      000072
+
+            NAME                TXT01
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0004
+            CHARACTER_FIRST     000073
+            CHARACTER_LAST      000142
+
+            NAME                TXT02
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0005
+            CHARACTER_FIRST     000143
+            CHARACTER_LAST      000212
+
+            NAME                TXT03
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0006
+            CHARACTER_FIRST     000213
+            CHARACTER_LAST      000282
+
+            NAME                TXT04
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0007
+            CHARACTER_FIRST     000283
+            CHARACTER_LAST      000352
+
+            NAME                TXT05
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0008
+            CHARACTER_FIRST     000353
+            CHARACTER_LAST      000422
+
+            NAME                TXT06
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0009
+            CHARACTER_FIRST     000423
+            CHARACTER_LAST      000492
+
+            NAME                TXT07
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0010
+            CHARACTER_FIRST     000493
+            CHARACTER_LAST      000562
+
+            NAME                TXT08
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0011
+            CHARACTER_FIRST     000563
+            CHARACTER_LAST      000632
+
+            NAME                TXT09
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0012
+            CHARACTER_FIRST     000633
+            CHARACTER_LAST      000702
+
+            NAME                TXT10
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0013
+            CHARACTER_FIRST     000703
+            CHARACTER_LAST      000772
+
+            NAME                TXT11
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0014
+            CHARACTER_FIRST     000773
+            CHARACTER_LAST      000842
+
+            NAME                TXT12
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0015
+            CHARACTER_FIRST     000843
+            CHARACTER_LAST      000912
+
+            NAME                TXT13
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0016
+            CHARACTER_FIRST     000913
+            CHARACTER_LAST      000982
+
+            NAME                TXT14
+            TEXT                Text continued
+            TYPE                CHARACTER
+            LENGTH              000070
+            FIELD_POS           0017
+            CHARACTER_FIRST     000983
+            CHARACTER_LAST      001052
+
+            NAME                TSSPRAS_ISO
+            TEXT                2-Character SAP Language Code
+            TYPE                CHARACTER
+            LENGTH              000002
+            FIELD_POS           0018
+            CHARACTER_FIRST     001053
+            CHARACTER_LAST      001054
+          END_FIELDS
+        END_SEGMENT
+      END_GROUP
+    END_GROUP
+    BEGIN_SEGMENT           E2IDOCENHANCEMENT000
+      SEGMENTTYPE         E1IDOCENHANCEMENT
+      LEVEL               01
+      STATUS              OPTIONAL
+      LOOPMIN             0000000001
+      LOOPMAX             0000999999
+      BEGIN_FIELDS
+        NAME                IDENTIFIER
+        TEXT                Data Containers for Enhancement of IDoc Types
+        TYPE                CHARACTER
+        LENGTH              000030
+        FIELD_POS           0001
+        CHARACTER_FIRST     000064
+        CHARACTER_LAST      000093
+
+        NAME                DATA
+        TEXT                Data Container for IDoc Enhancement
+        TYPE                CHARACTER
+        LENGTH              000970
+        FIELD_POS           0002
+        CHARACTER_FIRST     000094
+        CHARACTER_LAST      001063
+      END_FIELDS
+    END_SEGMENT
+  END_IDOC
+END_SEGMENT_SECTION
