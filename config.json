@@ -1,0 +1,27 @@
+{
+  "constants": {
+    "contrl": "EDI_DC40",
+    "client": "011"
+  },
+  "program": {
+    "dboNam": "idoctp.db",
+    "dboDir": "c:\\c_portab\\01_rb\\ProgramData\\go-idoc2txt\\",
+    "inpDir": "c:\\c_portab\\01_rb\\_rbprojects\\go-idoc2txt\\idoctypes\\",
+    "outDir": "c:\\c_portab\\01_rb\\ProgramData\\go-idoc2txt\\",
+    "inFilt": "!(*processed*)",
+    "inName": "rundt+'_'+idocn+docno+docdt+'_inp_processed'",
+    "ouName": "rundt+'_'+idocn+docno+docdt+'_out'"
+  },
+  "run": [
+    { "option": "unf", "objNam": "/rb04/yp3_invoic02_xml",
+      "inpDir": "c:\\c_portab\\01_rb\\ProgramData\\go-idoc2txt\\cfdi\\input\\",
+      "outDir": "c:\\c_portab\\01_rb\\ProgramData\\go-idoc2txt\\cfdi\\output\\",
+      "rcPrnF": "RE"
+    },
+    { "option": "unf", "objNam": "/rb04/yp3_invoic02",
+      "inpDir": "c:\\c_portab\\01_rb\\ProgramData\\go-idoc2txt\\invo\\input\\",
+      "outDir": "c:\\c_portab\\01_rb\\ProgramData\\go-idoc2txt\\invo\\output\\",
+      "rcPrnF": "RE"
+    }
+  ]
+}

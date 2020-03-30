@@ -2,30 +2,21 @@ package idoc2txt
 
 import "code.google.com/p/go-sqlite/go1/sqlite3"
 import "log"
-import "strings"
 
 // Data type Ddbo for creation of reference IDoc definition database
 type Ddbo_tp struct {
-  Dbodr, Cnnst string
+  Cnnsq, Cnnst string
+  Dbonm, Dbodr string
+  Inpdr, Outdr string
 }
 
-// Constructor of object Ddbo: Define database location folder and SQlite3 database full connection string
+// Constructor of object Ddbo: Define database name, location folder and SQlite3 database full connection string
 func NewDdbo(parm Param_tp, s Settings_tp) *Ddbo_tp {
   var d Ddbo_tp
-  for _, run := range s.Runlv {
-    if parm.Optn == run.Optcd {
-      if len(run.Dbodr) == 0 {
-        d.Dbodr = s.Progm.Dbodr
-      } else {
-        d.Dbodr = run.Dbodr
-      }
-    }
-  }
-  if len(parm.Prm1) == 0 {
-    d.Cnnst = s.Cnnst
-  } else {
-    d.Cnnst = strings.Replace(s.Cnnsq, "@", d.Dbodr+parm.Prm1, 1)
-  }
+  s.SetRunVars(parm, s)
+  d.Cnnsq, d.Cnnst = s.Cnnsq, s.Cnnst
+  d.Dbonm, d.Dbodr = s.Dbonm, s.Dbodr
+  d.Inpdr          = s.Inpdr
   return &d
 }
 

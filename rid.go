@@ -11,9 +11,11 @@ import "strconv"
 
 // Data type to read SAP IDoc parser file and to upload IDoc definition detail and structure into an internal reference database
 type Drid_tp struct {
-  Idocf, Idocn, Idoct          string
-  Inpdr, Outdr, Dbodr, Cnnst   string
-  Icol,  Gcol,  Scol,  Fcol  []string
+  Cnnsq, Cnnst                string
+  Dbonm, Dbodr                string
+  Objnm, Inpdr, Outdr         string
+  Idocf, Idocn, Idoct         string
+  Icol,  Gcol,  Scol,  Fcol []string
   Stack []Parsl_tp
   Lrecd []Recdf_tp
   Lidoc []Idcdf_tp
@@ -66,33 +68,21 @@ type Fildf_tp struct {
   Col [7]string // Name, Text, Type, Lngth, Seqno, Strps, Endps
 }
 
-// Constructor of object Drid: Define input file and database location folders, SQlite3 database full connection string as well
+// Constructor of object Drid: Define input file and database name and location folders, SQlite3 database full connection string as well
 func NewDrid(parm Param_tp, s Settings_tp) *Drid_tp {
   var r Drid_tp
-  for _, run := range s.Runlv {
-    if parm.Optn == run.Optcd {
-      if len(run.Inpdr) == 0 {
-        r.Inpdr = s.Progm.Inpdr
-      } else {
-        r.Inpdr = run.Inpdr
-      }
-      if len(run.Dbodr) == 0 {
-        r.Dbodr = s.Progm.Dbodr
-      } else {
-        r.Dbodr = run.Dbodr
-      }
-    }
-  }
-  r.Cnnst = strings.Replace(s.Cnnsq, "@", r.Dbodr+s.Progm.Dbnam, 1)
-  r.Idocf, r.Idoct, r.Idocn = s.Idocf, filepath.Ext(r.Idocf), strings.TrimRight(r.Idocf, r.Idoct)
-  if parm.Prm1 != "" {
-    r.Idocf = r.Inpdr + parm.Prm1
-  }
-  r.Icol = []string{"EXTENSION"}
-  r.Gcol = []string{"LEVEL", "STATUS", "LOOPMIN", "LOOPMAX"}
-  r.Scol = []string{"SEGMENTTYPE", "LEVEL", "STATUS", "LOOPMIN", "LOOPMAX"}
-  r.Fcol = []string{"NAME", "TEXT", "TYPE", "LENGTH", "FIELD_POS", "CHARACTER_FIRST", "CHARACTER_LAST"}
-  r.L = -1
+  s.SetRunVars(parm, s)
+  r.Cnnsq, r.Cnnst = s.Cnnsq, s.Cnnst
+  r.Dbonm, r.Dbodr = s.Dbonm, s.Dbodr
+  r.Inpdr, r.Outdr = s.Inpdr, s.Outdr
+  r.Idocf          = s.Objnm
+  r.Idoct, r.Idocn = filepath.Ext(r.Idocf), strings.TrimRight(r.Idocf, r.Idoct)
+  r.Idocf = r.Inpdr + r.Idocf
+  r.Icol  = []string{"EXTENSION"}
+  r.Gcol  = []string{"LEVEL", "STATUS", "LOOPMIN", "LOOPMAX"}
+  r.Scol  = []string{"SEGMENTTYPE", "LEVEL", "STATUS", "LOOPMIN", "LOOPMAX"}
+  r.Fcol  = []string{"NAME", "TEXT", "TYPE", "LENGTH", "FIELD_POS", "CHARACTER_FIRST", "CHARACTER_LAST"}
+  r.L     = -1
   return &r
 }
 

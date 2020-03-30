@@ -12,9 +12,13 @@ import "strings"
 
 // Data type to convert IDoc classic hierarchical format to flat text file format
 type Dunf_tp struct {
-  Inpdr, Outdr, Dbodr string
-  Cnnst, Ifilt, Idocf string
-  Idocx, Idocb, Idocn string
+  Cnnsq, Cnnst        string
+  Dbonm, Dbodr        string
+  Objnm, Inpdr, Outdr string
+  Ifilt, Ifnam, Ofnam string
+  Cntrl, Clien, Rcvpf string
+  Idocx               string
+  Idocn, Idocb        string
   Sectn, Secnb        string
   Sgnum, Sgnam, Sgdsc string
   Sgnbk, Sghnb, Sglvl string
@@ -36,33 +40,16 @@ type Hstruc_tp struct {
 // Constructor of object Dunf: Define input/output file and database location folders, database full connection string as well
 func NewDunf(parm Param_tp, s Settings_tp) *Dunf_tp {
   var u Dunf_tp
-  u.Inpdr = s.Progm.Inpdr
-  u.Outdr = s.Progm.Outdr
-  if len(parm.Prm1) > 0 {
-    u.Idocf = parm.Prm1
-  }
-  for _, run := range s.Runlv {
-    if run.Optcd == parm.Optn && run.Objnm == parm.Prm1 {
-      if len(run.Objnm) > 0 {
-        u.Idocf = run.Objnm
-      }
-      if len(run.Inpdr) > 0 {
-        u.Inpdr = run.Inpdr
-      }
-      if len(run.Outdr) > 0 {
-        u.Outdr = run.Outdr
-      }
-      if len(run.Dbodr) > 0 {
-        u.Dbodr = run.Dbodr
-      }
-      u.Ifilt = run.Ifilt
-    }
-  }
-  if len(u.Idocf) == 0 {
-    return &u
-  }
-  u.Cnnst = strings.Replace(s.Cnnsq, "@", s.Progm.Dbodr+s.Progm.Dbnam, 1)
-  u.Idocx = strings.ToUpper(parm.Prm2)
+  s.SetRunVars(parm, s)
+  u.Cnnsq, u.Cnnst = s.Cnnsq, s.Cnnst
+  u.Dbonm, u.Dbodr = s.Dbonm, s.Dbodr
+  u.Objnm          = s.Objnm
+  u.Inpdr, u.Outdr = s.Inpdr, s.Outdr
+  u.Ifilt          = s.Ifilt
+  u.Ifnam, u.Ofnam = s.Ifnam, s.Ofnam
+  u.Cntrl, u.Clien = s.Cntrl, s.Clien
+  u.Rcvpf          = s.Rcvpf
+  u.Idocx          = strings.ToUpper(s.Objnm)
   return &u
 }
 
@@ -71,13 +58,13 @@ func (u *Dunf_tp) UnfoldIdocs(s Settings_tp) {
   files, _ := ioutil.ReadDir(u.Inpdr)
   for _, f := range files {
     if len(u.Ifilt) == 0 || (len(u.Ifilt) > 0 && PassFilter(s, f)) {
-      u.ProcDataLines(s, f)
+      u.ProcDataLines(f)
     }
   }
 }
 
 // Function to process IDoc data files, reading line by line and determining measures for format conversion
-func (u *Dunf_tp) ProcDataLines(s Settings_tp, f os.FileInfo) {
+func (u *Dunf_tp) ProcDataLines(f os.FileInfo) {
   u.OpenProgStreams(f).DetermIdocProps()
   u.Idocn, u.Nsegm, u.L  = "", 0, -1
   u.Parnt = u.Parnt[:u.L+1]
@@ -234,10 +221,10 @@ func (u *Dunf_tp) SetControlField(flkey, flval string) {
 }
 func (u *Dunf_tp) DumpControlLine(wtr *bufio.Writer) {
   if u.Dirty {
-    u.SetControlField("TABNAM", "EDI_DC40")
-    u.SetControlField("MANDT",  "011")
+    u.SetControlField("TABNAM", u.Cntrl)
+    u.SetControlField("MANDT",  u.Clien)
     u.SetControlField("DOCNUM", u.Idocn)
-    u.SetControlField("RCVPFC", "RE")
+    u.SetControlField("RCVPFC", u.Rcvpf)
     u.SetControlField("SERIAL", u.Serie)
     fmt.Fprintf(wtr, "%s\r\n",  u.Lctrl)
     wtr.Flush()
@@ -275,7 +262,7 @@ func (u *Dunf_tp) SetSegmentField(sgdsc, flkey, flval string) {
 func (u *Dunf_tp) DumpSegmentLine(wtr *bufio.Writer) {
   if u.Dirty {
     u.SetSegmentField("DATA", "SEGNAM", u.Sgdsc)
-    u.SetSegmentField("DATA", "MANDT", "011")
+    u.SetSegmentField("DATA", "MANDT",  u.Clien)
     u.SetSegmentField("DATA", "DOCNUM", u.Idocn)
     u.SetSegmentField("DATA", "SEGNUM", u.Sgnbk)
     u.SetSegmentField("DATA", "PSGNUM", u.Sghnb)
