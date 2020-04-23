@@ -14,4 +14,5 @@ go run rtxtidoc.go -rid:orders05.txt
 go run rtxtidoc.go -rid:seqjit03.txt
 go run rtxtidoc.go -rid:y04vdelvry03.txt
 go run rtxtidoc.go -rid:y04vorders05.txt
+go run rtxtidoc.go -rid:z48v_invoic02_ex.txt
 pause

@@ -99,10 +99,17 @@ type Envmnt_tp struct {
   Dtsys, Dtcur, Dtnul time.Time
 }
 func (e *Envmnt_tp) NewEnvmnt(s Settings_tp) {
-  e.Cnnsq = CNNSTR
-  e.Cntrl = s.Const.Cntrl
-  e.Clien = s.Const.Clien
+  e.Cnnsq = CNNS_SQLIT3
   e.Dtsys, e.Dtcur, e.Dtnul = time.Now(), time.Now(), time.Date(1901, 1, 1, 0, 0, 0, 0, time.UTC)
+  e.Cntrl = ternary_op(len(s.Const.Cntrl) > 0, strings.TrimSpace(s.Const.Cntrl), CONTROL_CODE)
+  e.Clien = ternary_op(len(s.Const.Clien) > 0, strings.TrimSpace(s.Const.Clien), CLIENT_CODE)
+  e.Dbonm = ternary_op(len(s.Progm.Dbonm) > 0, strings.TrimSpace(s.Progm.Dbonm), DB_NAME)
+  e.Dbodr = ternary_op(len(s.Progm.Dbodr) > 0, strings.TrimSpace(s.Progm.Dbodr), DB_DIR)
+  e.Inpdr = ternary_op(len(s.Progm.Inpdr) > 0, strings.TrimSpace(s.Progm.Inpdr), INPUTS_DIR)
+  e.Outdr = ternary_op(len(s.Progm.Outdr) > 0, strings.TrimSpace(s.Progm.Outdr), OUTPUTS_DIR)
+  e.Ifilt = ternary_op(len(s.Progm.Ifilt) > 0, strings.TrimSpace(s.Progm.Ifilt), INPUTS_FILTER)
+  e.Ifnam = ternary_op(len(s.Progm.Ifnam) > 0, strings.TrimSpace(s.Progm.Ifnam), INPUTS_NAMING)
+  e.Ofnam = ternary_op(len(s.Progm.Ofnam) > 0, strings.TrimSpace(s.Progm.Ofnam), OUTPUTS_NAMING)
 }
 
 // Data type to be used as container of program-level and run-level settings. Pseudo-inheritance is used to simplify names of settings
@@ -120,184 +127,40 @@ func NewSettings(fname string) Settings_tp {
   return s
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------
 func (e *Envmnt_tp) SetRunVars(p Param_tp, s Settings_tp) {
-  for i := 0; i < len(s.Runlv) && !e.Found; i++ {
-    if p.Optn == s.Runlv[i].Optcd {
-      e.Found = true
-      if p.Optn == "cdb" || p.Optn == "rid" || p.Optn == "unf" {
-        e.seekRunObjnm(i,p,s).seekRunDbonm(i,s).seekRunDbodr(i,s)
-      }
-      if p.Optn == "rid" || p.Optn == "unf" {
-        e.seekRunInpdr(i,s).seekRunOutdr(i,s)
-      }
-      if p.Optn == "unf" {
-        e.seekRunIfilt(i,s).seekRunIfnam(i,s).seekRunOfnam(i,s).seekRunRcvpf(i,s)
-      }
-    }
-  }
-  if !e.Found {
-    if p.Optn == "cdb" || p.Optn == "rid" || p.Optn == "unf" {
-      e.seekPgmObjnm(p).seekPgmDbonm(s).seekPgmDbodr(s)
-    }
-    if p.Optn == "rid" || p.Optn == "unf" {
-      e.seekPgmInpdr(s).seekPgmOutdr(s)
-    }
-  }
-  e.seekConstCntrl(s).seekConstClien(s)
-  e.Cnnst = strings.Replace(e.Cnnsq, "@", e.Dbodr+e.Dbonm, 1)
-}
-
-func (e *Envmnt_tp) seekRunObjnm(i int, p Param_tp, s Settings_tp) *Envmnt_tp {
-  if len(s.Runlv[i].Objnm) > 0 {
-    e.Objnm = strings.TrimSpace(s.Runlv[i].Objnm)
-  } else {
-    e.seekPgmObjnm(p)
-  }
-  return e
-}
-func (e *Envmnt_tp) seekRunDbonm(i int, s Settings_tp) *Envmnt_tp {
-  if len(s.Runlv[i].Dbonm) > 0 {
-    e.Dbonm = strings.TrimSpace(s.Runlv[i].Dbonm)
-  } else {
-    e.seekPgmDbonm(s)
-  }
-  return e
-}
-func (e *Envmnt_tp) seekRunDbodr(i int, s Settings_tp) *Envmnt_tp {
-  if len(s.Runlv[i].Dbodr) > 0 {
-    e.Dbodr = strings.TrimSpace(s.Runlv[i].Dbodr)
-  } else {
-    e.seekPgmDbodr(s)
-  }
-  return e
-}
-func (e *Envmnt_tp) seekRunInpdr(i int, s Settings_tp) *Envmnt_tp {
-  if len(s.Runlv[i].Inpdr) > 0 {
-    e.Inpdr = strings.TrimSpace(s.Runlv[i].Inpdr)
-  } else {
-    e.seekPgmInpdr(s)
-  }
-  return e
-}
-func (e *Envmnt_tp) seekRunOutdr(i int, s Settings_tp) *Envmnt_tp {
-  if len(s.Runlv[i].Outdr) > 0 {
-    e.Outdr = strings.TrimSpace(s.Runlv[i].Outdr)
-  } else {
-    e.seekPgmOutdr(s)
-  }
-  return e
-}
-func (e *Envmnt_tp) seekRunIfilt(i int, s Settings_tp) *Envmnt_tp {
-  if len(s.Runlv[i].Ifilt) > 0 {
-    e.Ifilt = strings.TrimSpace(s.Runlv[i].Ifilt)
-  } else {
-    e.seekPgmIfilt(s)
-  }
-  return e
-}
-func (e *Envmnt_tp) seekRunIfnam(i int, s Settings_tp) *Envmnt_tp {
-  if len(s.Runlv[i].Ifnam) > 0 {
-    e.Ifnam = strings.TrimSpace(s.Runlv[i].Ifnam)
-  } else {
-    e.seekPgmIfnam(s)
-  }
-  return e
-}
-func (e *Envmnt_tp) seekRunOfnam(i int, s Settings_tp) *Envmnt_tp {
-  if len(s.Runlv[i].Ofnam) > 0 {
-    e.Ofnam = strings.TrimSpace(s.Runlv[i].Ofnam)
-  } else {
-    e.seekPgmOfnam(s)
-  }
-  return e
-}
-func (e *Envmnt_tp) seekRunRcvpf(i int, s Settings_tp) *Envmnt_tp {
-  if len(s.Runlv[i].Rcvpf) > 0 {
-    e.Rcvpf = strings.TrimSpace(s.Runlv[i].Rcvpf)
-  } else {
-    log.Fatalf("Error: Not possible to determine Receiver Partner Function.\r\n")
-  }
-  return e
-}
-
-func (e *Envmnt_tp) seekPgmObjnm(p Param_tp) *Envmnt_tp {
   if len(p.Prm1) > 0 {
     e.Objnm = strings.TrimSpace(p.Prm1)
   } else {
     log.Fatalf("Error: Not possible to determine IDOC-Type name.\r\n")
   }
-  return e
-}
-func (e *Envmnt_tp) seekPgmDbonm(s Settings_tp) *Envmnt_tp {
-  if len(s.Progm.Dbonm) > 0 {
-    e.Dbonm = strings.TrimSpace(s.Progm.Dbonm)
-  } else {
-    log.Fatalf("Error: Not possible to determine Database name.\r\n")
+  found := false
+  for i := 0; i < len(s.Runlv) && !found; i++ {
+    if p.Optn == s.Runlv[i].Optcd && p.Prm1 == s.Runlv[i].Objnm {
+      e.Found = true
+      if p.Optn == "cdb" || p.Optn == "rid" || p.Optn == "unf" {
+        e.Objnm = ternary_op(len(s.Runlv[i].Objnm) > 0, strings.TrimSpace(s.Runlv[i].Objnm), e.Objnm)
+        e.Dbonm = ternary_op(len(s.Runlv[i].Dbonm) > 0, strings.TrimSpace(s.Runlv[i].Dbonm), e.Dbonm)
+        e.Dbodr = ternary_op(len(s.Runlv[i].Dbodr) > 0, strings.TrimSpace(s.Runlv[i].Dbodr), e.Dbodr)
+      }
+      if p.Optn == "rid" || p.Optn == "unf" {
+        e.Inpdr = ternary_op(len(s.Runlv[i].Inpdr) > 0, strings.TrimSpace(s.Runlv[i].Inpdr), e.Inpdr)
+        e.Outdr = ternary_op(len(s.Runlv[i].Outdr) > 0, strings.TrimSpace(s.Runlv[i].Outdr), e.Outdr)
+      }
+      if p.Optn == "unf" {
+        e.Ifilt = ternary_op(len(s.Runlv[i].Ifilt) > 0, strings.TrimSpace(s.Runlv[i].Ifilt), e.Ifilt)
+        e.Ifnam = ternary_op(len(s.Runlv[i].Ifnam) > 0, strings.TrimSpace(s.Runlv[i].Ifnam), e.Ifnam)
+        e.Ofnam = ternary_op(len(s.Runlv[i].Ofnam) > 0, strings.TrimSpace(s.Runlv[i].Ofnam), e.Ofnam)
+        e.Rcvpf = ternary_op(len(s.Runlv[i].Rcvpf) > 0, strings.TrimSpace(s.Runlv[i].Rcvpf), e.Rcvpf)
+      }
+    }
   }
-  return e
-}
-func (e *Envmnt_tp) seekPgmDbodr(s Settings_tp) *Envmnt_tp {
-  if len(s.Progm.Dbodr) > 0 {
-    e.Dbodr = strings.TrimSpace(s.Progm.Dbodr)
-  } else {
-    log.Fatalf("Error: Not possible to determine Database directory.\r\n")
-  }
-  return e
-}
-func (e *Envmnt_tp) seekPgmInpdr(s Settings_tp) *Envmnt_tp {
-  if len(s.Progm.Inpdr) > 0 {
-    e.Inpdr = strings.TrimSpace(s.Progm.Inpdr)
-  } else {
-    log.Fatalf("Error: Not possible to determine Input files directory.\r\n")
-  }
-  return e
-}
-func (e *Envmnt_tp) seekPgmOutdr(s Settings_tp) *Envmnt_tp {
-  if len(s.Progm.Outdr) > 0 {
-    e.Outdr = strings.TrimSpace(s.Progm.Outdr)
-  } else {
-    log.Fatalf("Error: Not possible to determine Output files directory.\r\n")
-  }
-  return e
-}
-func (e *Envmnt_tp) seekPgmIfilt(s Settings_tp) *Envmnt_tp {
-  if len(s.Progm.Ifilt) > 0 {
-    e.Ifilt = strings.TrimSpace(s.Progm.Ifilt)
-  } else {
-    log.Fatalf("Error: Not possible to determine Input filter.\r\n")
-  }
-  return e
-}
-func (e *Envmnt_tp) seekPgmIfnam(s Settings_tp) *Envmnt_tp {
-  if len(s.Progm.Ifnam) > 0 {
-    e.Ifnam = strings.TrimSpace(s.Progm.Ifnam)
-  } else {
-    log.Fatalf("Error: Not possible to determine Input files Naming Rule.\r\n")
-  }
-  return e
-}
-func (e *Envmnt_tp) seekPgmOfnam(s Settings_tp) *Envmnt_tp {
-  if len(s.Progm.Ofnam) > 0 {
-    e.Ofnam = strings.TrimSpace(s.Progm.Ofnam)
-  } else {
-    log.Fatalf("Error: Not possible to determine Output files Naming Rule.\r\n")
-  }
-  return e
+  e.Cnnst = strings.Replace(e.Cnnsq, "@", e.Dbodr+e.Dbonm, 1)
 }
 
-func (e *Envmnt_tp) seekConstCntrl(s Settings_tp) *Envmnt_tp {
-  if len(s.Const.Cntrl) > 0 {
-    e.Cntrl = strings.TrimSpace(s.Const.Cntrl)
-  } else {
-    log.Fatalf("Error: Not possible to determine Control constant.\r\n")
-  }
-  return e
-}
-func (e *Envmnt_tp) seekConstClien(s Settings_tp) *Envmnt_tp {
-  if len(s.Const.Clien) > 0 {
-    e.Clien = strings.TrimSpace(s.Const.Clien)
-  } else {
-    log.Fatalf("Error: Not possible to determine Client constant.\r\n")
-  }
-  return e
+func ternary_op(statement bool, tcond, fcond string) string {
+  if statement {
+    return tcond
+  } 
+  return fcond
 }

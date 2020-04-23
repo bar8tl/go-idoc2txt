@@ -11,9 +11,6 @@ import "strconv"
 
 // Data type to read SAP IDoc parser file and to upload IDoc definition detail and structure into an internal reference database
 type Drid_tp struct {
-  Cnnsq, Cnnst                string
-  Dbonm, Dbodr                string
-  Objnm, Inpdr, Outdr         string
   Idocf, Idocn, Idoct         string
   Icol,  Gcol,  Scol,  Fcol []string
   Stack []Parsl_tp
@@ -69,25 +66,22 @@ type Fildf_tp struct {
 }
 
 // Constructor of object Drid: Define input file and database name and location folders, SQlite3 database full connection string as well
-func NewDrid(parm Param_tp, s Settings_tp) *Drid_tp {
+func NewDrid() *Drid_tp {
   var r Drid_tp
+  return &r
+}
+
+// Public option RID: Read and upload IDoc-definition text file (commonly known as IDoc Parser-File in SAP Transaction Code WE60)
+func (r *Drid_tp) ProcInput(parm Param_tp, s Settings_tp) {
   s.SetRunVars(parm, s)
-  r.Cnnsq, r.Cnnst = s.Cnnsq, s.Cnnst
-  r.Dbonm, r.Dbodr = s.Dbonm, s.Dbodr
-  r.Inpdr, r.Outdr = s.Inpdr, s.Outdr
   r.Idocf          = s.Objnm
   r.Idoct, r.Idocn = filepath.Ext(r.Idocf), strings.TrimRight(r.Idocf, r.Idoct)
-  r.Idocf = r.Inpdr + r.Idocf
+  r.Idocf = s.Inpdr + r.Idocf
   r.Icol  = []string{"EXTENSION"}
   r.Gcol  = []string{"LEVEL", "STATUS", "LOOPMIN", "LOOPMAX"}
   r.Scol  = []string{"SEGMENTTYPE", "LEVEL", "STATUS", "LOOPMIN", "LOOPMAX"}
   r.Fcol  = []string{"NAME", "TEXT", "TYPE", "LENGTH", "FIELD_POS", "CHARACTER_FIRST", "CHARACTER_LAST"}
   r.L     = -1
-  return &r
-}
-
-// Public option RID: Read and upload IDoc-definition text file (commonly known as IDoc Parser-File in SAP Transaction Code WE60)
-func (r *Drid_tp) ProcInput(s Settings_tp) {
   ifile, err := os.Open(r.Idocf)
   if err != nil {
     log.Fatalf("Input file %s not found: %s\r\n", r.Idocf, err)
@@ -195,7 +189,7 @@ type Args_tp struct {
 }
 
 func (r *Drid_tp) ProcEndOfFile(s Settings_tp) {
-  db, err := sqlite3.Open(r.Cnnst)
+  db, err := sqlite3.Open(s.Cnnst)
   if err != nil {
     log.Fatalf("Open SQLite database error: %v\n", err)
   }

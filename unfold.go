@@ -12,11 +12,6 @@ import "strings"
 
 // Data type to convert IDoc classic hierarchical format to flat text file format
 type Dunf_tp struct {
-  Cnnsq, Cnnst        string
-  Dbonm, Dbodr        string
-  Objnm, Inpdr, Outdr string
-  Ifilt, Ifnam, Ofnam string
-  Cntrl, Clien, Rcvpf string
   Idocx               string
   Idocn, Idocb        string
   Sectn, Secnb        string
@@ -38,34 +33,26 @@ type Hstruc_tp struct {
 }
 
 // Constructor of object Dunf: Define input/output file and database location folders, database full connection string as well
-func NewDunf(parm Param_tp, s Settings_tp) *Dunf_tp {
+func NewDunf() *Dunf_tp {
   var u Dunf_tp
-  s.SetRunVars(parm, s)
-  u.Cnnsq, u.Cnnst = s.Cnnsq, s.Cnnst
-  u.Dbonm, u.Dbodr = s.Dbonm, s.Dbodr
-  u.Objnm          = s.Objnm
-  u.Inpdr, u.Outdr = s.Inpdr, s.Outdr
-  u.Ifilt          = s.Ifilt
-  u.Ifnam, u.Ofnam = s.Ifnam, s.Ofnam
-  u.Cntrl, u.Clien = s.Cntrl, s.Clien
-  u.Rcvpf          = s.Rcvpf
-  u.Idocx          = strings.ToUpper(s.Objnm)
   return &u
 }
 
 // Public option UNF: Unfold data IDocs based on specific IDoc-type. Produces system readeable flat text files
-func (u *Dunf_tp) UnfoldIdocs(s Settings_tp) {
-  files, _ := ioutil.ReadDir(u.Inpdr)
+func (u *Dunf_tp) UnfoldIdocs(parm Param_tp, s Settings_tp) {
+  s.SetRunVars(parm, s)
+  u.Idocx = strings.ToUpper(s.Objnm)
+  files, _ := ioutil.ReadDir(s.Inpdr)
   for _, f := range files {
-    if len(u.Ifilt) == 0 || (len(u.Ifilt) > 0 && PassFilter(s, f)) {
-      u.ProcDataLines(f)
+    if len(s.Ifilt) == 0 || (len(s.Ifilt) > 0 && PassFilter(s, f)) {
+      u.ProcDataLines(s, f)
     }
   }
 }
 
 // Function to process IDoc data files, reading line by line and determining measures for format conversion
-func (u *Dunf_tp) ProcDataLines(f os.FileInfo) {
-  u.OpenProgStreams(f).DetermIdocProps()
+func (u *Dunf_tp) ProcDataLines(s Settings_tp, f os.FileInfo) {
+  u.OpenProgStreams(s, f).DetermIdocProps()
   u.Idocn, u.Nsegm, u.L  = "", 0, -1
   u.Parnt = u.Parnt[:u.L+1]
   rdr := bufio.NewReader(u.Ifile)
@@ -85,7 +72,7 @@ func (u *Dunf_tp) ProcDataLines(f os.FileInfo) {
       continue
     }
     if t[0] == "EDIDC" || t[0] == "EDIDD" || t[0] == "EDIDS" { // determines data section to analyze
-      u.SetupSection(t, wtr)
+      u.SetupSection(s, t, wtr)
       continue
     }
     if t[0] == "SEGNUM" && len(t) == 3 { // check in segment number to analize
@@ -94,7 +81,7 @@ func (u *Dunf_tp) ProcDataLines(f os.FileInfo) {
       continue
     }
     if t[0] == "SEGNAM" && len(t) == 3 { // check in segment name to analize
-      u.SetupSegment(t, wtr)
+      u.SetupSegment(s, t, wtr)
       continue
     }
     // process fields of each data section
@@ -106,11 +93,11 @@ func (u *Dunf_tp) ProcDataLines(f os.FileInfo) {
       u.procEdids(u.Secnb, t)
     }
   }
-  u.CloseProgStreams(f)
+  u.CloseProgStreams(s, f)
 }
 
 // Function to setup measures to take for each data section. Each new section causes dumping data from previous one
-func (u *Dunf_tp) SetupSection(t []string, wtr *bufio.Writer) {
+func (u *Dunf_tp) SetupSection(s Settings_tp, t []string, wtr *bufio.Writer) {
   u.Sectn = t[0]
   if u.Sectn == "EDIDC" {
     for i := 0; i < len(u.Lctrl); i++ {
@@ -118,11 +105,11 @@ func (u *Dunf_tp) SetupSection(t []string, wtr *bufio.Writer) {
     }
   }
   if u.Sectn == "EDIDD" {
-    u.DumpControlLine(wtr)
+    u.DumpControlLine(s, wtr)
   }
   if u.Sectn == "EDIDS" {
     u.Sgnbk = u.Sgnum
-    u.DumpSegmentLine(wtr)
+    u.DumpSegmentLine(s, wtr)
     for i := 0; i < len(u.Lstat); i++ {
       u.Lstat[i] = ' '
     }
@@ -133,10 +120,10 @@ func (u *Dunf_tp) SetupSection(t []string, wtr *bufio.Writer) {
 }
 
 // Function to setup measures to take for each data segment in Data Idoc being converted
-func (u *Dunf_tp) SetupSegment(t []string, wtr *bufio.Writer) {
+func (u *Dunf_tp) SetupSegment(s Settings_tp, t []string, wtr *bufio.Writer) {
   u.Nsegm++
   if u.Nsegm > 1 {
-    u.DumpSegmentLine(wtr)
+    u.DumpSegmentLine(s, wtr)
   }
   u.Sgnam = t[2]
   for i := 0; i < len(u.Lsegm); i++ {
@@ -219,12 +206,12 @@ func (u *Dunf_tp) SetControlField(flkey, flval string) {
     k++
   }
 }
-func (u *Dunf_tp) DumpControlLine(wtr *bufio.Writer) {
+func (u *Dunf_tp) DumpControlLine(s Settings_tp, wtr *bufio.Writer) {
   if u.Dirty {
-    u.SetControlField("TABNAM", u.Cntrl)
-    u.SetControlField("MANDT",  u.Clien)
+    u.SetControlField("TABNAM", s.Cntrl)
+    u.SetControlField("MANDT",  s.Clien)
     u.SetControlField("DOCNUM", u.Idocn)
-    u.SetControlField("RCVPFC", u.Rcvpf)
+    u.SetControlField("RCVPFC", s.Rcvpf)
     u.SetControlField("SERIAL", u.Serie)
     fmt.Fprintf(wtr, "%s\r\n",  u.Lctrl)
     wtr.Flush()
@@ -259,10 +246,10 @@ func (u *Dunf_tp) SetSegmentField(sgdsc, flkey, flval string) {
     k++
   }
 }
-func (u *Dunf_tp) DumpSegmentLine(wtr *bufio.Writer) {
+func (u *Dunf_tp) DumpSegmentLine(s Settings_tp, wtr *bufio.Writer) {
   if u.Dirty {
     u.SetSegmentField("DATA", "SEGNAM", u.Sgdsc)
-    u.SetSegmentField("DATA", "MANDT",  u.Clien)
+    u.SetSegmentField("DATA", "MANDT",  s.Clien)
     u.SetSegmentField("DATA", "DOCNUM", u.Idocn)
     u.SetSegmentField("DATA", "SEGNUM", u.Sgnbk)
     u.SetSegmentField("DATA", "PSGNUM", u.Sghnb)
@@ -275,28 +262,28 @@ func (u *Dunf_tp) DumpSegmentLine(wtr *bufio.Writer) {
 
 func (u *Dunf_tp) procEdids(secnb string, t []string) {}
 
-func (u *Dunf_tp) OpenProgStreams(f os.FileInfo) *Dunf_tp {
+func (u *Dunf_tp) OpenProgStreams(s Settings_tp, f os.FileInfo) *Dunf_tp {
   var err error
-  u.Db, err = sqlite3.Open(u.Cnnst)
+  u.Db, err = sqlite3.Open(s.Cnnst)
   if err != nil {
     log.Fatalf("Open SQLite database error: %s\n", err)
   }
-  u.Ifile, err = os.Open(u.Inpdr + f.Name())
+  u.Ifile, err = os.Open(s.Inpdr + f.Name())
   if err != nil {
     log.Fatalf("Input file not found: %s\r\n", err)
   }
-  u.Ofile, err = os.Create(u.Outdr + f.Name())
+  u.Ofile, err = os.Create(s.Outdr + f.Name())
   if err != nil {
     log.Fatalf("Error during output file creation: %s\r\n", err)
   }
   return u
 }
-func (u *Dunf_tp) CloseProgStreams(f os.FileInfo) *Dunf_tp {
+func (u *Dunf_tp) CloseProgStreams(s Settings_tp, f os.FileInfo) *Dunf_tp {
   u.Ifile.Close()
   u.Ofile.Close()
   u.Db.Close()
-  RanameInpFile(u.Inpdr, f)
-  RanameOutFile(u.Outdr, f)
+  RanameInpFile(s.Inpdr, f)
+  RanameOutFile(s.Outdr, f)
   return u
 }
 func (u *Dunf_tp) DetermIdocProps() *Dunf_tp {

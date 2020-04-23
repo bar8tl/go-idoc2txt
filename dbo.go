@@ -5,29 +5,23 @@ import "log"
 
 // Data type Ddbo for creation of reference IDoc definition database
 type Ddbo_tp struct {
-  Cnnsq, Cnnst string
-  Dbonm, Dbodr string
-  Inpdr, Outdr string
 }
 
 // Constructor of object Ddbo: Define database name, location folder and SQlite3 database full connection string
-func NewDdbo(parm Param_tp, s Settings_tp) *Ddbo_tp {
+func NewDdbo() *Ddbo_tp {
   var d Ddbo_tp
-  s.SetRunVars(parm, s)
-  d.Cnnsq, d.Cnnst = s.Cnnsq, s.Cnnst
-  d.Dbonm, d.Dbodr = s.Dbonm, s.Dbodr
-  d.Inpdr          = s.Inpdr
   return &d
 }
 
 // Public option CDB: Creation of tables in database
-func (d *Ddbo_tp) CrtTables() {
-  d.CrtItems().CrtStruc()
+func (d *Ddbo_tp) CrtTables(parm Param_tp, s Settings_tp) {
+  s.SetRunVars(parm, s)
+  d.CrtItems(s).CrtStruc(s)
 }
 
 // Function to create table ITEMS: Which table contains specifications for IDOC control/data/status records
-func (d *Ddbo_tp) CrtItems() *Ddbo_tp {
-  db, _ := sqlite3.Open(d.Cnnst)
+func (d *Ddbo_tp) CrtItems(s Settings_tp) *Ddbo_tp {
+  db, _ := sqlite3.Open(s.Cnnst)
   defer db.Close()
   db.Exec(`
     DROP TABLE IF EXISTS items;
@@ -61,8 +55,8 @@ func (d *Ddbo_tp) CrtItems() *Ddbo_tp {
 }
 
 // Function to create table STRUC: Which table contains specifications for structure of IDOC elements
-func (d *Ddbo_tp) CrtStruc() *Ddbo_tp {
-  db, _ := sqlite3.Open(d.Cnnst)
+func (d *Ddbo_tp) CrtStruc(s Settings_tp) *Ddbo_tp {
+  db, _ := sqlite3.Open(s.Cnnst)
   defer db.Close()
   db.Exec(`
     DROP TABLE IF EXISTS struc;
