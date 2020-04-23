@@ -7,8 +7,6 @@ import "os"
 import "strings"
 import "time"
 
-const CNNSTR = "file:@?file:locked.sqlite?cache=shared&mode=rwc"
-
 // Data type to get a list of run-level parameters from command execution line (Structured like: -Option:Parameter1:Parameter2)
 type Params_tp struct {
   Cmdpr []Param_tp
@@ -161,6 +159,6 @@ func (e *Envmnt_tp) SetRunVars(p Param_tp, s Settings_tp) {
 func ternary_op(statement bool, tcond, fcond string) string {
   if statement {
     return tcond
-  } 
+  }
   return fcond
 }

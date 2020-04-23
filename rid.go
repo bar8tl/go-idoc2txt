@@ -11,7 +11,6 @@ import "strconv"
 
 // Data type to read SAP IDoc parser file and to upload IDoc definition detail and structure into an internal reference database
 type Drid_tp struct {
-  Idocf, Idocn, Idoct         string
   Icol,  Gcol,  Scol,  Fcol []string
   Stack []Parsl_tp
   Lrecd []Recdf_tp
@@ -68,23 +67,21 @@ type Fildf_tp struct {
 // Constructor of object Drid: Define input file and database name and location folders, SQlite3 database full connection string as well
 func NewDrid() *Drid_tp {
   var r Drid_tp
+  r.Icol = []string{"EXTENSION"}
+  r.Gcol = []string{"LEVEL", "STATUS", "LOOPMIN", "LOOPMAX"}
+  r.Scol = []string{"SEGMENTTYPE", "LEVEL", "STATUS", "LOOPMIN", "LOOPMAX"}
+  r.Fcol = []string{"NAME", "TEXT", "TYPE", "LENGTH", "FIELD_POS", "CHARACTER_FIRST", "CHARACTER_LAST"}
+  r.L    = -1
   return &r
 }
 
 // Public option RID: Read and upload IDoc-definition text file (commonly known as IDoc Parser-File in SAP Transaction Code WE60)
 func (r *Drid_tp) ProcInput(parm Param_tp, s Settings_tp) {
   s.SetRunVars(parm, s)
-  r.Idocf          = s.Objnm
-  r.Idoct, r.Idocn = filepath.Ext(r.Idocf), strings.TrimRight(r.Idocf, r.Idoct)
-  r.Idocf = s.Inpdr + r.Idocf
-  r.Icol  = []string{"EXTENSION"}
-  r.Gcol  = []string{"LEVEL", "STATUS", "LOOPMIN", "LOOPMAX"}
-  r.Scol  = []string{"SEGMENTTYPE", "LEVEL", "STATUS", "LOOPMIN", "LOOPMAX"}
-  r.Fcol  = []string{"NAME", "TEXT", "TYPE", "LENGTH", "FIELD_POS", "CHARACTER_FIRST", "CHARACTER_LAST"}
-  r.L     = -1
-  ifile, err := os.Open(r.Idocf)
+  idoct, idocn := filepath.Ext(s.Objnm), strings.TrimRight(s.Objnm, idoct)
+  ifile, err := os.Open(s.Inpdr+s.Objnm)
   if err != nil {
-    log.Fatalf("Input file %s not found: %s\r\n", r.Idocf, err)
+    log.Fatalf("Input file %s not found: %s\r\n", s.Inpdr+s.Objnm, err)
   }
   defer ifile.Close()
   rdr := bufio.NewReader(ifile)
