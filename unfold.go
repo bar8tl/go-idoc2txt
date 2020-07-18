@@ -40,7 +40,7 @@ func NewDunf() *Dunf_tp {
 
 // Public option UNF: Unfold data IDocs based on specific IDoc-type. Produces system readeable flat text files
 func (u *Dunf_tp) UnfoldIdocs(parm Param_tp, s Settings_tp) {
-  s.SetRunVars(parm, s)
+  s.SetRunVars(parm)
   u.Idocx = strings.ToUpper(s.Objnm)
   files, _ := ioutil.ReadDir(s.Inpdr)
   for _, f := range files {

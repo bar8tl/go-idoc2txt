@@ -94,6 +94,7 @@ type Envmnt_tp struct {
   Ifilt, Ifnam, Ofnam string
   Cntrl, Clien, Rcvpf string
   Found               bool
+  Mitm, Sgrp, Ssgm    bool
   Dtsys, Dtcur, Dtnul time.Time
 }
 func (e *Envmnt_tp) NewEnvmnt(s Settings_tp) {
@@ -126,34 +127,52 @@ func NewSettings(fname string) Settings_tp {
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------
-func (e *Envmnt_tp) SetRunVars(p Param_tp, s Settings_tp) {
+func (s *Settings_tp) SetRunVars(p Param_tp) {
   if len(p.Prm1) > 0 {
-    e.Objnm = strings.TrimSpace(p.Prm1)
+    s.Objnm = strings.TrimSpace(p.Prm1)
   } else {
-    log.Fatalf("Error: Not possible to determine IDOC-Type name.\r\n")
+    log.Fatalf("Error: Not possible to determine IDOC-Type nams.\r\n")
   }
   found := false
   for i := 0; i < len(s.Runlv) && !found; i++ {
     if p.Optn == s.Runlv[i].Optcd && p.Prm1 == s.Runlv[i].Objnm {
-      e.Found = true
+      s.Found = true
       if p.Optn == "cdb" || p.Optn == "rid" || p.Optn == "unf" {
-        e.Objnm = ternary_op(len(s.Runlv[i].Objnm) > 0, strings.TrimSpace(s.Runlv[i].Objnm), e.Objnm)
-        e.Dbonm = ternary_op(len(s.Runlv[i].Dbonm) > 0, strings.TrimSpace(s.Runlv[i].Dbonm), e.Dbonm)
-        e.Dbodr = ternary_op(len(s.Runlv[i].Dbodr) > 0, strings.TrimSpace(s.Runlv[i].Dbodr), e.Dbodr)
+        s.Objnm = ternary_op(len(s.Runlv[i].Objnm) > 0, strings.TrimSpace(s.Runlv[i].Objnm), s.Objnm)
+        s.Dbonm = ternary_op(len(s.Runlv[i].Dbonm) > 0, strings.TrimSpace(s.Runlv[i].Dbonm), s.Dbonm)
+        s.Dbodr = ternary_op(len(s.Runlv[i].Dbodr) > 0, strings.TrimSpace(s.Runlv[i].Dbodr), s.Dbodr)
       }
       if p.Optn == "rid" || p.Optn == "unf" {
-        e.Inpdr = ternary_op(len(s.Runlv[i].Inpdr) > 0, strings.TrimSpace(s.Runlv[i].Inpdr), e.Inpdr)
-        e.Outdr = ternary_op(len(s.Runlv[i].Outdr) > 0, strings.TrimSpace(s.Runlv[i].Outdr), e.Outdr)
+        s.Inpdr = ternary_op(len(s.Runlv[i].Inpdr) > 0, strings.TrimSpace(s.Runlv[i].Inpdr), s.Inpdr)
+        s.Outdr = ternary_op(len(s.Runlv[i].Outdr) > 0, strings.TrimSpace(s.Runlv[i].Outdr), s.Outdr)
       }
       if p.Optn == "unf" {
-        e.Ifilt = ternary_op(len(s.Runlv[i].Ifilt) > 0, strings.TrimSpace(s.Runlv[i].Ifilt), e.Ifilt)
-        e.Ifnam = ternary_op(len(s.Runlv[i].Ifnam) > 0, strings.TrimSpace(s.Runlv[i].Ifnam), e.Ifnam)
-        e.Ofnam = ternary_op(len(s.Runlv[i].Ofnam) > 0, strings.TrimSpace(s.Runlv[i].Ofnam), e.Ofnam)
-        e.Rcvpf = ternary_op(len(s.Runlv[i].Rcvpf) > 0, strings.TrimSpace(s.Runlv[i].Rcvpf), e.Rcvpf)
+        s.Ifilt = ternary_op(len(s.Runlv[i].Ifilt) > 0, strings.TrimSpace(s.Runlv[i].Ifilt), s.Ifilt)
+        s.Ifnam = ternary_op(len(s.Runlv[i].Ifnam) > 0, strings.TrimSpace(s.Runlv[i].Ifnam), s.Ifnam)
+        s.Ofnam = ternary_op(len(s.Runlv[i].Ofnam) > 0, strings.TrimSpace(s.Runlv[i].Ofnam), s.Ofnam)
+        s.Rcvpf = ternary_op(len(s.Runlv[i].Rcvpf) > 0, strings.TrimSpace(s.Runlv[i].Rcvpf), s.Rcvpf)
       }
     }
   }
-  e.Cnnst = strings.Replace(e.Cnnsq, "@", e.Dbodr+e.Dbonm, 1)
+  if p.Optn == "rid" {
+    s.Mitm, s.Sgrp, s.Ssgm = true, false, false
+    if len(p.Prm2) > 0 {
+      mflds := strings.Split(p.Prm2, ".")
+      for i := 0; i < len(mflds); i++ {
+        switch strings.ToLower(mflds[i]) {
+        case ITM :
+          s.Mitm = true
+        case GRP :
+          s.Sgrp = true
+        case SGM :
+          s.Ssgm = true
+        default :
+          s.Mitm, s.Sgrp, s.Ssgm = true, false, false
+        }
+      }
+    }
+  }
+  s.Cnnst = strings.Replace(s.Cnnsq, "@", s.Dbodr+s.Dbonm, 1)
 }
 
 func ternary_op(statement bool, tcond, fcond string) string {

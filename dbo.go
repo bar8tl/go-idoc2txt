@@ -15,7 +15,7 @@ func NewDdbo() *Ddbo_tp {
 
 // Public option CDB: Creation of tables in database
 func (d *Ddbo_tp) CrtTables(parm Param_tp, s Settings_tp) {
-  s.SetRunVars(parm, s)
+  s.SetRunVars(parm)
   d.CrtItems(s).CrtStruc(s)
 }
 
@@ -63,9 +63,14 @@ func (d *Ddbo_tp) CrtStruc(s Settings_tp) *Ddbo_tp {
   `)
   err := db.Exec(`
     CREATE TABLE struc (
-      parnt TEXT,
-      child TEXT,
-      PRIMARY KEY (parnt, child)
+      idocn TEXT,
+      strtp TEXT,
+      prnam TEXT,
+      pdnam TEXT,
+      seqno TEXT,
+      crnam TEXT,
+      cdnam TEXT,
+      PRIMARY KEY (idocn, strtp, prnam, pdnam, seqno, crnam, cdnam)
     );
   `)
   if err != nil {
