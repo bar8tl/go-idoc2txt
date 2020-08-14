@@ -1,5 +1,6 @@
 go run rtxtidoc.go -rid:_-rb04_-yp3_delvry_rbna.txt:itm.grp.sgm
 go run rtxtidoc.go -rid:_-rb04_-yp3_delvry_rbna_vw.txt:itm.grp.sgm
+go run rtxtidoc.go -rid:_-rb04_-yp3_delvry05_824.txt:itm.grp.sgm  
 go run rtxtidoc.go -rid:_-rb04_-yp3_invoic02.txt:itm.grp.sgm
 go run rtxtidoc.go -rid:_-rb04_-yp3_invoic02_cu.txt:itm.grp.sgm
 go run rtxtidoc.go -rid:_-rb04_-yp3_invoic02_intrace.txt:itm.grp.sgm

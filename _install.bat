@@ -3,6 +3,8 @@ md idoc2txt
 cd idoc2txt
 copy c:\c_portab\01_rb\_rbprojects\go-idoc2txt\constants.go .
 copy c:\c_portab\01_rb\_rbprojects\go-idoc2txt\dbo.go       .
+copy c:\c_portab\01_rb\_rbprojects\go-idoc2txt\docum.go     .
+copy c:\c_portab\01_rb\_rbprojects\go-idoc2txt\dtypes.go    .
 copy c:\c_portab\01_rb\_rbprojects\go-idoc2txt\names.go     .
 copy c:\c_portab\01_rb\_rbprojects\go-idoc2txt\outsqlt.go   .
 copy c:\c_portab\01_rb\_rbprojects\go-idoc2txt\rid.go       .

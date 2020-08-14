@@ -10,35 +10,42 @@ import "os"
 import "strconv"
 import "strings"
 
-// Data type to convert IDoc classic hierarchical format to flat text file format
+// Data type to convert IDoc classic hierarchical format to flat text file
+// format
 type Dunf_tp struct {
-  Idocx               string
-  Idocn, Idocb        string
-  Sectn, Secnb        string
-  Sgnum, Sgnam, Sgdsc string
-  Sgnbk, Sghnb, Sglvl string
-  Serie               string
-  Nsegm               int
-  Dirty               bool
-  Lctrl          [524]byte
-  Lsegm         [1063]byte
-  Lstat          [562]byte
-  Ifile, Ofile       *os.File
-  Db                 *sqlite3.Conn
-  Parnt             []Hstruc_tp
-  L                   int
-}
-type Hstruc_tp struct {
-  Sgnum, Sgnam, Sglvl string
+  Idocx string
+  Idocn string
+  Idocb string
+  Sectn string
+  Secnb string
+  Sgnum string
+  Sgnam string
+  Sgdsc string
+  Sgnbk string
+  Sghnb string
+  Sglvl string
+  Serie string
+  Nsegm int
+  Dirty bool
+  Lctrl [524]byte
+  Lsegm [1063]byte
+  Lstat [562]byte
+  Ifile *os.File
+  Ofile *os.File
+  Db    *sqlite3.Conn
+  Parnt []Hstruc_tp
+  L     int
 }
 
-// Constructor of object Dunf: Define input/output file and database location folders, database full connection string as well
+// Constructor of object Dunf: Define input/output file and database location
+// folders, database full connection string as well
 func NewDunf() *Dunf_tp {
   var u Dunf_tp
   return &u
 }
 
-// Public option UNF: Unfold data IDocs based on specific IDoc-type. Produces system readeable flat text files
+// Public option UNF: Unfold data IDocs based on specific IDoc-type. Produces
+// system readeable flat text files
 func (u *Dunf_tp) UnfoldIdocs(parm Param_tp, s Settings_tp) {
   s.SetRunVars(parm)
   u.Idocx = strings.ToUpper(s.Objnm)
@@ -50,41 +57,57 @@ func (u *Dunf_tp) UnfoldIdocs(parm Param_tp, s Settings_tp) {
   }
 }
 
-// Function to process IDoc data files, reading line by line and determining measures for format conversion
+// Function to process IDoc data files, reading line by line and determining
+// measures for format conversion
 func (u *Dunf_tp) ProcDataLines(s Settings_tp, f os.FileInfo) {
   u.OpenProgStreams(s, f).DetermIdocProps()
-  u.Idocn, u.Nsegm, u.L  = "", 0, -1
+  u.Idocn = ""
+  u.Nsegm = 0
+  u.L = -1
   u.Parnt = u.Parnt[:u.L+1]
   rdr := bufio.NewReader(u.Ifile)
   wtr := bufio.NewWriter(u.Ofile)
-  for l, err := rdr.ReadString(byte('\n')); err != io.EOF; l, err = rdr.ReadString(byte('\n')) {
+  for l, err := rdr.ReadString(byte('\n')); err != io.EOF;
+    l, err = rdr.ReadString(byte('\n')) {
     l = strings.TrimSpace(l)
     t := strings.Split(l, "\t")
     if len(l) == 0 { // ignores lines in blank
       continue
     }
-    if len(u.Idocn) == 0 && len(t) == 1 && l[0:11] == "IDoc Number" { // gets IDoc number
+    log.Printf("%s\r\n", l)
+
+    // Gets IDoc number
+    if len(u.Idocn) == 0 && len(t) == 1 && l[0:11] == "IDoc Number" {
       i := strings.Split(l, " : ")
       u.Idocn = strings.TrimSpace(i[1])
       continue
     }
-    if len(t) <= 1 { // ignores lines no containing tabulators (after to have gotten IDoc number)
+
+    // Ignores lines no containing tabulators (after to have gotten IDoc number)
+    if len(t) <= 1 {
       continue
     }
-    if t[0] == "EDIDC" || t[0] == "EDIDD" || t[0] == "EDIDS" { // determines data section to analyze
+
+    // Determines data section to analyze
+    if t[0] == "EDIDC" || t[0] == "EDIDD" || t[0] == "EDIDS" {
       u.SetupSection(s, t, wtr)
       continue
     }
-    if t[0] == "SEGNUM" && len(t) == 3 { // check in segment number to analize
+
+    // Checks in segment number to analize
+    if t[0] == "SEGNUM" && len(t) == 3 {
       u.Sgnbk = u.Sgnum
       u.Sgnum = t[2]
       continue
     }
-    if t[0] == "SEGNAM" && len(t) == 3 { // check in segment name to analize
+
+    // Checks in segment name to analize
+    if t[0] == "SEGNAM" && len(t) == 3 {
       u.SetupSegment(s, t, wtr)
       continue
     }
-    // process fields of each data section
+
+    // Process fields of each data section
     if u.Sectn == "EDIDC" {
       u.procEdidc(t)
     } else if u.Sectn == "EDIDD" {
@@ -96,7 +119,8 @@ func (u *Dunf_tp) ProcDataLines(s Settings_tp, f os.FileInfo) {
   u.CloseProgStreams(s, f)
 }
 
-// Function to setup measures to take for each data section. Each new section causes dumping data from previous one
+// Function to setup measures to take for each data section. Each new section
+// causes dumping data from previous one
 func (u *Dunf_tp) SetupSection(s Settings_tp, t []string, wtr *bufio.Writer) {
   u.Sectn = t[0]
   if u.Sectn == "EDIDC" {
@@ -119,7 +143,8 @@ func (u *Dunf_tp) SetupSection(s Settings_tp, t []string, wtr *bufio.Writer) {
   }
 }
 
-// Function to setup measures to take for each data segment in Data Idoc being converted
+// Function to setup measures to take for each data segment in Data Idoc being
+// converted
 func (u *Dunf_tp) SetupSegment(s Settings_tp, t []string, wtr *bufio.Writer) {
   u.Nsegm++
   if u.Nsegm > 1 {
@@ -129,9 +154,12 @@ func (u *Dunf_tp) SetupSegment(s Settings_tp, t []string, wtr *bufio.Writer) {
   for i := 0; i < len(u.Lsegm); i++ {
     u.Lsegm[i] = ' '
   }
-  rdb, err := u.Db.Query(`SELECT dname, level FROM items WHERE idocn=? and rname=? and dtype=?;`, u.Idocx, "SEGMENT", u.Sgnam)
+  rdb, err := u.Db.Query(
+    `SELECT dname, level FROM items WHERE idocn=? and rname=? and dtype=?;`,
+    u.Idocx, "SEGMENT", u.Sgnam)
   if err != nil {
-    log.Fatalf("Error during searching segment description: %s %s\r\n", u.Sgnam, err)
+    log.Fatalf("Error during searching segment description: %s %s\r\n",
+      u.Sgnam, err)
   }
   var level int
   rdb.Scan(&u.Sgdsc, &level)
@@ -147,7 +175,9 @@ func (u *Dunf_tp) SetupSegment(s Settings_tp, t []string, wtr *bufio.Writer) {
       u.L++
       u.Sghnb = u.Parnt[u.L-1].Sgnum
     } else if u.Sglvl == u.Parnt[u.L].Sglvl {
-      u.Parnt[u.L].Sgnum, u.Parnt[u.L].Sgnam, u.Parnt[u.L].Sglvl = u.Sgnum, u.Sgnam, u.Sglvl
+      u.Parnt[u.L].Sgnum = u.Sgnum
+      u.Parnt[u.L].Sgnam = u.Sgnam
+      u.Parnt[u.L].Sglvl = u.Sglvl
       u.Sghnb = u.Parnt[u.L-1].Sgnum
     } else {
       prvlv, _ := strconv.Atoi(u.Parnt[u.L].Sglvl)
@@ -157,7 +187,9 @@ func (u *Dunf_tp) SetupSegment(s Settings_tp, t []string, wtr *bufio.Writer) {
         u.L--
         u.Parnt = u.Parnt[:u.L+1]
       }
-      u.Parnt[u.L].Sgnum, u.Parnt[u.L].Sgnam, u.Parnt[u.L].Sglvl = u.Sgnum, u.Sgnam, u.Sglvl
+      u.Parnt[u.L].Sgnum = u.Sgnum
+      u.Parnt[u.L].Sgnam = u.Sgnam
+      u.Parnt[u.L].Sglvl = u.Sglvl
       u.Sghnb = u.Parnt[u.L-1].Sgnum
     }
   }
@@ -186,9 +218,12 @@ func (u *Dunf_tp) procEdidc(t []string) {
     u.SetControlField(flkey, flval)
   }
 }
+
 func (u *Dunf_tp) SetControlField(flkey, flval string) {
   var strps int
-  rdb, err := u.Db.Query(`SELECT strps FROM items WHERE idocn=? and rname=? and dname=?;`, u.Idocx, "CONTROL", flkey)
+  rdb, err := u.Db.Query(
+    `SELECT strps FROM items WHERE idocn=? and rname=? and dname=?;`,
+    u.Idocx, "CONTROL", flkey)
   if err != nil {
     log.Fatalf("Error during reading database for control data: %v\r\n", err)
   }
@@ -197,7 +232,7 @@ func (u *Dunf_tp) SetControlField(flkey, flval string) {
   if flkey == "IDOCTYP" && flval == "14" {
     flval = u.Idocb
   }
-  if flkey == "CIMTYP" && flval == "14" {
+  if flkey == "CIMTYP"  && flval == "14" {
     flval = u.Idocx
   }
   k := strps - 1
@@ -206,6 +241,7 @@ func (u *Dunf_tp) SetControlField(flkey, flval string) {
     k++
   }
 }
+
 func (u *Dunf_tp) DumpControlLine(s Settings_tp, wtr *bufio.Writer) {
   if u.Dirty {
     u.SetControlField("TABNAM", s.Cntrl)
@@ -213,7 +249,7 @@ func (u *Dunf_tp) DumpControlLine(s Settings_tp, wtr *bufio.Writer) {
     u.SetControlField("DOCNUM", u.Idocn)
     u.SetControlField("RCVPFC", s.Rcvpf)
     u.SetControlField("SERIAL", u.Serie)
-    fmt.Fprintf(wtr, "%s\r\n",  u.Lctrl)
+    fmt.Fprintf(wtr, "%s\r\n", u.Lctrl)
     wtr.Flush()
     u.Dirty = false
   }
@@ -232,11 +268,16 @@ func (u *Dunf_tp) procEdidd(sgnum, sgnam string, t []string) {
     u.SetSegmentField(u.Sgdsc, flkey, flval)
   }
 }
+
 func (u *Dunf_tp) SetSegmentField(sgdsc, flkey, flval string) {
   var strps int
-  rdb, err := u.Db.Query(`SELECT strps FROM items WHERE idocn=? and rname=? and dname=?;`, u.Idocx, sgdsc, flkey)
+  rdb, err := u.Db.Query(
+    `SELECT strps FROM items WHERE idocn=? and rname=? and dname=?;`,
+    u.Idocx, sgdsc, flkey)
   if err != nil {
-    log.Fatalf("Error during reading database for segment data: %s %s %s %v\r\n", u.Idocx, u.Sgdsc, flkey, err)
+    log.Fatalf(
+      "Error during reading database for segment data: %s %s %s %v\r\n",
+      u.Idocx, u.Sgdsc, flkey, err)
   }
   rdb.Scan(&strps)
   rdb.Close()
@@ -246,6 +287,7 @@ func (u *Dunf_tp) SetSegmentField(sgdsc, flkey, flval string) {
     k++
   }
 }
+
 func (u *Dunf_tp) DumpSegmentLine(s Settings_tp, wtr *bufio.Writer) {
   if u.Dirty {
     u.SetSegmentField("DATA", "SEGNAM", u.Sgdsc)
@@ -278,6 +320,7 @@ func (u *Dunf_tp) OpenProgStreams(s Settings_tp, f os.FileInfo) *Dunf_tp {
   }
   return u
 }
+
 func (u *Dunf_tp) CloseProgStreams(s Settings_tp, f os.FileInfo) *Dunf_tp {
   u.Ifile.Close()
   u.Ofile.Close()
@@ -286,10 +329,12 @@ func (u *Dunf_tp) CloseProgStreams(s Settings_tp, f os.FileInfo) *Dunf_tp {
   RanameOutFile(s.Outdr, f)
   return u
 }
+
 func (u *Dunf_tp) DetermIdocProps() *Dunf_tp {
-  rdb, err := u.Db.Query("SELECT dname FROM items WHERE idocn=? and rname=?;", u.Idocx, "IDOC")
+  rdb, err := u.Db.Query(
+    "SELECT dname FROM items WHERE idocn=? and rname=?;", u.Idocx, "IDOC")
   if err != nil {
-    log.Fatalf("Error during searching Idoc properties: %s %v\r\n", u.Idocx, err)
+    log.Fatalf("Error in searching Idoc properties: %s %v\r\n", u.Idocx, err)
   }
   rdb.Scan(&u.Idocb)
   rdb.Close()

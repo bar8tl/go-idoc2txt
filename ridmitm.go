@@ -2,52 +2,26 @@ package idoc2txt
 
 import "strconv"
 
+// Data type to get IDoc items data (records, groups, segments and fields)
+// and to create corresponding items records in ref database
 type Drmitm_tp struct {
-  Icol, Gcol, Scol, Fcol []string
-  Stack []Parsl_tp  // levels stack
-  Lrecd []Recdf_tp  // lists
-  Lidoc []Idcdf_tp
-  Lgrup []Grpdf_tp
-  Lsegm []Segdf_tp
-  Lfild []Flddf_tp
-  Didoc   Idocf_tp
-  Dgrup   Grupf_tp
-  Dsegm   Segmf_tp
-  Dfild   Fildf_tp
-  Out     Outsqlt_tp
-  L       int       // level
-}
-type Recdf_tp struct {
-  Name, Type, Clas string
-  Flds             Fildf_tp
-}
-type Idcdf_tp struct {
-  Name, Type string
-  Idoc       Idocf_tp
-}
-type Grpdf_tp struct {
-  Name, Type string
-  Grup       Grupf_tp
-}
-type Segdf_tp struct {
-  Name, Type string
-  Segm       Segmf_tp
-}
-type Flddf_tp struct {
-  Name, Type, Clas string
-  Flds             Fildf_tp
-}
-type Idocf_tp struct {
-  Col [2]string // Name, Extsn
-}
-type Grupf_tp struct {
-  Col [5]string // Numbr, Level, Stats, Minlp, Maxlp
-}
-type Segmf_tp struct {
-  Col [6]string // Name, Type, Level, Stats, Minlp, Maxlp
-}
-type Fildf_tp struct {
-  Col [7]string // Name, Text, Type, Lngth, Seqno, Strps, Endps
+  Icol  []string
+  Gcol  []string
+  Scol  []string
+  Fcol  []string
+  Stack []Parsl_tp // List of Parsl_tp: Levels stack
+  Lidoc []Idcdf_tp // List of Idcdf_tp: Idoc
+  Lgrup []Grpdf_tp // List of Grpdf_tp: Grup
+  Lsegm []Segdf_tp // List of Segdf_tp: Segm
+  Lfild []Flddf_tp // List of Flddf_tp: Fild
+  Lrecd []Flddf_tp // List of Flddf_tp: Fild
+  Colsi [2]string  // Name, Extn
+  Colsg [5]string  // Numb, Levl, Stat, Mnlp, Mxlp
+  Colss [6]string  // Name, Type, Levl, Stat, Mnlp, Mxlp
+  Colsf [7]string  // Name, Text, Type, Lgth, Seqn, Strp, Endp
+  Colsr [7]string  // Name, Text, Type, Lgth, Seqn, Strp, Endp
+  Out   Outsqlt_tp
+  L     int        // Stack level
 }
 
 func (r *Drmitm_tp) NewDrmitm(s Settings_tp) {
@@ -55,80 +29,93 @@ func (r *Drmitm_tp) NewDrmitm(s Settings_tp) {
   r.Icol = []string{"EXTENSION"}
   r.Gcol = []string{"LEVEL", "STATUS", "LOOPMIN", "LOOPMAX"}
   r.Scol = []string{"SEGMENTTYPE", "LEVEL", "STATUS", "LOOPMIN", "LOOPMAX"}
-  r.Fcol = []string{"NAME", "TEXT", "TYPE", "LENGTH", "FIELD_POS", "CHARACTER_FIRST", "CHARACTER_LAST"}
-  r.L    = -1
+  r.Fcol = []string{"NAME", "TEXT", "TYPE", "LENGTH", "FIELD_POS",
+    "CHARACTER_FIRST", "CHARACTER_LAST"}
+  r.L = -1
 }
 
-// Functions to get IDoc items data (records, groups, segments and fields) and to create corresponding items records in ref database
-func (r *Drmitm_tp) GetData(sline Parsl_tp) { // Scan SAP parser file to identify IDoc elements
+// Scan SAP parser file to identify IDoc elements
+func (r *Drmitm_tp) GetData(sline Parsl_tp) {
   if sline.Label.Ident == "BEGIN" {
     r.L++
-    r.Stack = append(r.Stack, Parsl_tp{Reclb_tp{sline.Label.Ident, sline.Label.Recnm, sline.Label.Rectp}, sline.Value})
+    r.Stack = append(r.Stack, Parsl_tp{
+      Reclb_tp{sline.Label.Ident, sline.Label.Recnm, sline.Label.Rectp},
+      sline.Value})
     if sline.Value != "" {
       if sline.Label.Recnm == "IDOC" {
-        r.Didoc.Col[0], r.Didoc.Col[1] = sline.Value, sline.Value
-        r.Lidoc = append(r.Lidoc, Idcdf_tp{r.Didoc.Col[0], r.Stack[r.L].Label.Recnm, r.Didoc})
+        r.Colsi[0] = sline.Value
+        r.Colsi[1] = sline.Value
+        r.Lidoc = append(r.Lidoc, Idcdf_tp{
+          r.Colsi[0], r.Stack[r.L].Label.Recnm, r.Colsi})
       } else if sline.Label.Recnm == "GROUP" {
-        r.Dgrup.Col[0] = sline.Value
+        r.Colsg[0] = sline.Value
       } else if sline.Label.Recnm == "SEGMENT" {
-        r.Dsegm.Col[0] = sline.Value
+        r.Colss[0] = sline.Value
       }
     }
     return
   }
+
   if sline.Label.Ident == "END" {
     r.L--
     r.Stack = r.Stack[:r.L+1]
     return
   }
+
   if r.Stack[r.L].Label.Recnm == "IDOC" {
-    match := false
-    for i := 0; i < len(r.Icol) && !match; i++ {
+    for i := 0; i < len(r.Icol); i++ {
       if sline.Label.Ident == r.Icol[i] {
-        r.Didoc.Col[i+1] = sline.Value
-        match = true
+        r.Colsi[i+1] = sline.Value
         if i == (len(r.Icol) - 1) {
-          r.Lidoc[0].Idoc.Col[1] = r.Didoc.Col[i+1]
+          r.Lidoc[0].Cols[1] = r.Colsi[i+1]
         }
+        break
       }
     }
   }
+
   if r.Stack[r.L].Label.Recnm == "GROUP" {
-    match := false
-    for i := 0; i < len(r.Gcol) && !match; i++ {
+    for i := 0; i < len(r.Gcol); i++ {
       if sline.Label.Ident == r.Gcol[i] {
-        r.Dgrup.Col[i+1] = sline.Value
-        match = true
+        r.Colsg[i+1] = sline.Value
         if i == (len(r.Gcol) - 1) {
-          r.Lgrup = append(r.Lgrup, Grpdf_tp{r.Dgrup.Col[0], r.Stack[r.L].Label.Recnm, r.Dgrup})
+          r.Lgrup = append(r.Lgrup, Grpdf_tp{
+            r.Colsg[0], r.Stack[r.L].Label.Recnm, r.Colsg})
         }
+        break
       }
     }
   }
+
   if r.Stack[r.L].Label.Recnm == "SEGMENT" {
-    match := false
-    for i := 0; i < len(r.Scol) && !match; i++ {
+    for i := 0; i < len(r.Scol); i++ {
       if sline.Label.Ident == r.Scol[i] {
-        r.Dsegm.Col[i+1] = sline.Value
-        match = true
+        r.Colss[i+1] = sline.Value
         if i == (len(r.Scol) - 1) {
-          r.Lsegm = append(r.Lsegm, Segdf_tp{r.Dsegm.Col[0], r.Stack[r.L].Label.Recnm, r.Dsegm})
+          r.Lsegm = append(r.Lsegm, Segdf_tp{
+            r.Colss[0], r.Stack[r.L].Label.Recnm, r.Colss})
         }
+        break
       }
     }
   }
+
   if r.Stack[r.L].Label.Recnm == "FIELDS" {
     match := false
     for i := 0; i < len(r.Fcol) && !match; i++ {
       if sline.Label.Ident == r.Fcol[i] {
-        r.Dfild.Col[i] = sline.Value
+        r.Colsf[i] = sline.Value
         match = true
       }
       if i == (len(r.Fcol) - 1) {
         if r.Stack[r.L-1].Label.Rectp == "RECORD" {
-          r.Lrecd = append(r.Lrecd, Recdf_tp{r.Stack[r.L-1].Label.Recnm, r.Stack[r.L].Label.Recnm, r.Stack[r.L-1].Label.Rectp, r.Dfild})
+          r.Lrecd = append(r.Lrecd, Flddf_tp{
+            r.Stack[r.L-1].Label.Recnm, r.Stack[r.L].Label.Recnm,
+            r.Stack[r.L-1].Label.Rectp, r.Colsf})
         } else if r.Stack[r.L-1].Label.Recnm == "SEGMENT" {
-          r.Lfild = append(r.Lfild, Flddf_tp{r.Dsegm.Col[0], r.Stack[r.L].Label.Recnm, r.Stack[r.L-1].Label.Recnm, r.Dfild})
+          r.Lfild = append(r.Lfild, Flddf_tp{
+            r.Colss[0], r.Stack[r.L].Label.Recnm, r.Stack[r.L-1].Label.Recnm,
+            r.Colsf})
         }
       }
     }
@@ -136,85 +123,144 @@ func (r *Drmitm_tp) GetData(sline Parsl_tp) { // Scan SAP parser file to identif
 }
 
 // Functions to upload IDoc data elements into a reference definition database
-type Args_tp struct {
-  idocn, rname, rtype, rclas, dname, dtype, dtext, extsn, stats string
-  gnumb, level, minlp, maxlp, lngth, seqno, strps, endps        int
-}
 func (r *Drmitm_tp) IsrtData(s Settings_tp) {
-  r.Out.ClearItems(r.Lidoc[0].Idoc.Col[1])
-  r.UpldRecd().UplDidoc().UplDgrup().UplDsegm().UpldFlds()
+  r.Out.ClearItems(r.Lidoc[0].Cols[1])
+  r.UpldRecd()
+  r.UplDidoc()
+  r.UplDgrup()
+  r.UplDsegm()
+  r.UpldFlds()
 }
-func (r *Drmitm_tp) UpldRecd() *Drmitm_tp { // Upload IDoc records data
-  var a Args_tp
-  for i := 0; i < len(r.Lrecd); i++ {
-    a.idocn = r.Lidoc[0].Idoc.Col[1]
-    a.rname = r.Lrecd[i].Name
-    a.rtype, a.rclas, a.dname, a.extsn = r.Lrecd[i].Type, r.Lrecd[i].Clas, r.Lrecd[i].Flds.Col[0], ""
-    a.dtype, a.dtext, a.stats = r.Lrecd[i].Flds.Col[2], r.Lrecd[i].Flds.Col[1], ""
-    a.gnumb, a.level, a.minlp, a.maxlp = 0, 0, 0, 0
-    a.lngth, _ = strconv.Atoi(r.Lrecd[i].Flds.Col[3])
-    a.seqno, _ = strconv.Atoi(r.Lrecd[i].Flds.Col[4])
-    a.strps, _ = strconv.Atoi(r.Lrecd[i].Flds.Col[5])
-    a.endps, _ = strconv.Atoi(r.Lrecd[i].Flds.Col[6])
-    r.Out.IsrtItems(a)
-  }
-  return r
-}
+
+// /RB04/YP3_DELVRY_RBNA|IDOC|DELVRY07|DELVRY07|IDOC|||/RB04/YP3_DELVRY_RBNA|0|
+// 0||0|0|0|0|0|0
 func (r *Drmitm_tp) UplDidoc() *Drmitm_tp { // Upload IDoc idoc data
   var a Args_tp
-  for i := 0; i < len(r.Lidoc); i++ {
-    a.idocn = r.Lidoc[0].Idoc.Col[1]
-    a.rname = r.Lidoc[i].Type
-    a.rtype, a.rclas, a.dname, a.extsn = r.Lidoc[i].Type, r.Lidoc[i].Name, r.Lidoc[i].Idoc.Col[0], r.Lidoc[i].Idoc.Col[1]
-    a.dtype, a.dtext, a.stats = "", "", ""
-    a.gnumb, a.level, a.minlp, a.maxlp, a.lngth, a.seqno, a.strps, a.endps = 0, 0, 0, 0, 0, 0, 0, 0
+  for _, lidoc := range r.Lidoc {
+    a.idocn = r.Lidoc[0].Cols[1] // EXTENSION       /RB04/YP3_DELVRY_RBNA
+    a.rname = lidoc.Type         // B…_IDOC         IDOC
+    a.dname = lidoc.Cols[0]      // BEGIN_IDOC      DELVRY07
+    a.rclas = lidoc.Name         // BEGIN_IDOC      DELVRY07
+    a.rtype = lidoc.Type         // B…_IDOC         IDOC
+    a.dtype = ""
+    a.dtext = ""
+    a.extsn = lidoc.Cols[1]      // EXTENSION       /RB04/YP3_DELVRY_RBNA
+    a.gnumb = 0
+    a.level = 0
+    a.stats = ""
+    a.minlp = 0
+    a.maxlp = 0
+    a.lngth = 0
+    a.seqno = 0
+    a.strps = 0
+    a.endps = 0
     r.Out.IsrtItems(a)
   }
   return r
 }
+
+// /RB04/YP3_DELVRY_RBNA|GROUP|1|1|GROUP||||1|2|MANDATORY|1|9999|0|0|0|0
 func (r *Drmitm_tp) UplDgrup() *Drmitm_tp { // Upload IDoc groups data
   var a Args_tp
-  for i := 0; i < len(r.Lgrup); i++ {
-    a.idocn = r.Lidoc[0].Idoc.Col[1]
-    a.rname = r.Lgrup[i].Type
-    a.rtype, a.rclas, a.dname, a.extsn = r.Lgrup[i].Type, r.Lgrup[i].Name, r.Lgrup[i].Grup.Col[0], ""
-    a.dtype, a.dtext, a.stats = "", "", r.Lgrup[i].Grup.Col[2]
-    a.gnumb, _ = strconv.Atoi(r.Lgrup[i].Grup.Col[0])
-    a.level, _ = strconv.Atoi(r.Lgrup[i].Grup.Col[1])
-    a.minlp, _ = strconv.Atoi(r.Lgrup[i].Grup.Col[3])
-    a.maxlp, _ = strconv.Atoi(r.Lgrup[i].Grup.Col[4])
-    a.lngth, a.seqno, a.strps, a.endps = 0, 0, 0, 0
+  for _, lgrup := range r.Lgrup {
+    a.idocn = r.Lidoc[0].Cols[1] // EXTENSION       /RB04/YP3_DELVRY_RBNA
+    a.rname = lgrup.Type         // B…_GROUP        GROUP
+    a.dname = lgrup.Cols[0]      // BEGIN_GROUP     1
+    a.rclas = lgrup.Name         // BEGIN_GROUP     1
+    a.rtype = lgrup.Type         // B…_GROUP        GROUP
+    a.dtype = ""
+    a.dtext = ""
+    a.extsn = ""
+    a.gnumb, _ = strconv.Atoi(lgrup.Cols[0]) // BEGIN_GROUP     1
+    a.level, _ = strconv.Atoi(lgrup.Cols[1]) // LEVEL           02
+    a.stats = lgrup.Cols[2]                  // STATUS          MANDATORY
+    a.minlp, _ = strconv.Atoi(lgrup.Cols[3]) // LOOPMIN         0000000001
+    a.maxlp, _ = strconv.Atoi(lgrup.Cols[4]) // LOOPMAX         0000009999
+    a.lngth = 0
+    a.seqno = 0
+    a.strps = 0
+    a.endps = 0
     r.Out.IsrtItems(a)
   }
   return r
 }
+
+// /RB04/YP3_DELVRY_RBNA|SEGMENT|E2EDL20004|E2EDL20004|SEGMENT|E1EDL20|||0|2|
+// MANDATORY|1|1|0|0|0|0
 func (r *Drmitm_tp) UplDsegm() *Drmitm_tp { // Upload IDoc segments data
   var a Args_tp
-  for i := 0; i < len(r.Lsegm); i++ {
-    a.idocn = r.Lidoc[0].Idoc.Col[1]
-    a.rname = r.Lsegm[i].Type
-    a.rtype, a.rclas, a.dname, a.extsn = r.Lsegm[i].Type, r.Lsegm[i].Name, r.Lsegm[i].Segm.Col[0], ""
-    a.dtype, a.dtext, a.stats = r.Lsegm[i].Segm.Col[1], "", r.Lsegm[i].Segm.Col[3]
-    a.level, _ = strconv.Atoi(r.Lsegm[i].Segm.Col[2])
-    a.minlp, _ = strconv.Atoi(r.Lsegm[i].Segm.Col[4])
-    a.maxlp, _ = strconv.Atoi(r.Lsegm[i].Segm.Col[5])
-    a.gnumb, a.lngth, a.seqno, a.strps, a.endps = 0, 0, 0, 0, 0
+  for _, lsegm := range r.Lsegm {
+    a.idocn = r.Lidoc[0].Cols[1] // EXTENSION       /RB04/YP3_DELVRY_RBNA
+    a.rname = lsegm.Type         // B…_SEGMENT      SEGMENT
+    a.dname = lsegm.Cols[0]      // BEGIN_SEGMENT   E2EDL20004
+    a.rclas = lsegm.Name         // BEGIN_SEGMENT   E2EDL20004
+    a.rtype = lsegm.Type         // B…_SEGMENT      SEGMENT
+    a.dtype = lsegm.Cols[1]      // SEGMENTTYPE     E1EDL20
+    a.dtext = ""
+    a.extsn = ""
+    a.gnumb = 0
+    a.level, _ = strconv.Atoi(lsegm.Cols[2]) // LEVEL           02
+    a.stats = lsegm.Cols[3]                  // STATUS          MANDATORY
+    a.minlp, _ = strconv.Atoi(lsegm.Cols[4]) // LOOPMIN         0000000001
+    a.maxlp, _ = strconv.Atoi(lsegm.Cols[5]) // LOOPMAX         0000000001
+    a.lngth = 0
+    a.seqno = 0
+    a.strps = 0
+    a.endps = 0
     r.Out.IsrtItems(a)
   }
   return r
 }
+
+// /RB04/YP3_DELVRY_RBNA|E2EDL20004|VKBUR|SEGMENT|FIELDS|CHARACTER|Sales Office|
+// |0|0||0|0|4|5|84|87
 func (r *Drmitm_tp) UpldFlds() *Drmitm_tp { // Upload IDoc fields data
   var a Args_tp
-  for i := 0; i < len(r.Lfild); i++ {
-    a.idocn = r.Lidoc[0].Idoc.Col[1]
-    a.rname = r.Lfild[i].Name
-    a.rtype, a.rclas, a.dname, a.extsn = r.Lfild[i].Type, r.Lfild[i].Clas, r.Lfild[i].Flds.Col[0], ""
-    a.dtype, a.dtext, a.stats = r.Lfild[i].Flds.Col[2], r.Lfild[i].Flds.Col[1], ""
-    a.gnumb, a.level, a.minlp, a.maxlp = 0, 0, 0, 0
-    a.lngth, _ = strconv.Atoi(r.Lfild[i].Flds.Col[3])
-    a.seqno, _ = strconv.Atoi(r.Lfild[i].Flds.Col[4])
-    a.strps, _ = strconv.Atoi(r.Lfild[i].Flds.Col[5])
-    a.endps, _ = strconv.Atoi(r.Lfild[i].Flds.Col[6])
+  for _, lfild := range r.Lfild {
+    a.idocn = r.Lidoc[0].Cols[1] // EXTENSION       /RB04/YP3_DELVRY_RBNA
+    a.rname = lfild.Name         // BEGIN_SEGMENT   E2EDL20004
+    a.dname = lfild.Cols[0]      // NAME            VKBUR
+    a.rclas = lfild.Clas         // B…_SEGMENT      SEGMENT
+    a.rtype = lfild.Type         // B…_FIELDS       FIELDS
+    a.dtype = lfild.Cols[2]      // TYPE            CHARACTER
+    a.dtext = lfild.Cols[1]      // TEXT            Sales Office
+    a.extsn = ""
+    a.gnumb = 0
+    a.level = 0
+    a.stats = ""
+    a.minlp = 0
+    a.maxlp = 0
+    a.lngth, _ = strconv.Atoi(lfild.Cols[3]) // LENGTH          000004
+    a.seqno, _ = strconv.Atoi(lfild.Cols[4]) // FIELD_POS       0005
+    a.strps, _ = strconv.Atoi(lfild.Cols[5]) // CHARACTER_FIRST 000084
+    a.endps, _ = strconv.Atoi(lfild.Cols[6]) // CHARACTER_LAST  000087
+    r.Out.IsrtItems(a)
+  }
+  return r
+}
+
+// /RB04/YP3_DELVRY_RBNA|CONTROL|TABNAM|RECORD|FIELDS|CHARACTER|
+// Name of Table Structure||0|0||0|0|10|1|1|10
+func (r *Drmitm_tp) UpldRecd() *Drmitm_tp { // Upload IDoc records data
+  var a Args_tp
+  for _, lrecd := range r.Lrecd {
+    a.idocn = r.Lidoc[0].Cols[1] // EXTENSION       /RB04/YP3_DELVRY_RBNA
+    a.rname = lrecd.Name         // B…_CONTROL_R…   CONTROL
+    a.dname = lrecd.Cols[0]      // NAME            TABNAM
+    a.rclas = lrecd.Clas         // B…_C…_RECORD    RECORD
+    a.rtype = lrecd.Type         // B…_FIELDS       FIELDS
+    a.dtype = lrecd.Cols[2]      // TYPE            CHARACTER
+    a.dtext = lrecd.Cols[1]      // TEXT            Name of Table Stru...
+    a.extsn = ""
+    a.gnumb = 0
+    a.level = 0
+    a.stats = ""
+    a.minlp = 0
+    a.maxlp = 0
+    a.lngth, _ = strconv.Atoi(lrecd.Cols[3]) // LENGTH          000010
+    a.seqno, _ = strconv.Atoi(lrecd.Cols[4]) // FIELD_POS       0001
+    a.strps, _ = strconv.Atoi(lrecd.Cols[5]) // CHARACTER_FIRST 000001
+    a.endps, _ = strconv.Atoi(lrecd.Cols[6]) // CHARACTER_LAST  000010
     r.Out.IsrtItems(a)
   }
   return r

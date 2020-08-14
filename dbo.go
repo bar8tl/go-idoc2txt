@@ -7,7 +7,8 @@ import "log"
 type Ddbo_tp struct {
 }
 
-// Constructor of object Ddbo: Define database name, location folder and SQlite3 database full connection string
+// Constructor of object Ddbo: Define database name, location folder and
+// SQlite3 database full connection string
 func NewDdbo() *Ddbo_tp {
   var d Ddbo_tp
   return &d
@@ -16,16 +17,16 @@ func NewDdbo() *Ddbo_tp {
 // Public option CDB: Creation of tables in database
 func (d *Ddbo_tp) CrtTables(parm Param_tp, s Settings_tp) {
   s.SetRunVars(parm)
-  d.CrtItems(s).CrtStruc(s)
+  d.CrtItems(s)
+  d.CrtStruc(s)
 }
 
-// Function to create table ITEMS: Which table contains specifications for IDOC control/data/status records
+// Function to create table ITEMS: Which table contains specifications for
+// IDOC control/data/status records
 func (d *Ddbo_tp) CrtItems(s Settings_tp) *Ddbo_tp {
   db, _ := sqlite3.Open(s.Cnnst)
   defer db.Close()
-  db.Exec(`
-    DROP TABLE IF EXISTS items;
-  `)
+  db.Exec(`DROP TABLE IF EXISTS items;`)
   err := db.Exec(`
     CREATE TABLE items (
       idocn TEXT,
@@ -54,13 +55,12 @@ func (d *Ddbo_tp) CrtItems(s Settings_tp) *Ddbo_tp {
   return d
 }
 
-// Function to create table STRUC: Which table contains specifications for structure of IDOC elements
+// Function to create table STRUC: Which table contains specifications for
+// structure of IDOC elements
 func (d *Ddbo_tp) CrtStruc(s Settings_tp) *Ddbo_tp {
   db, _ := sqlite3.Open(s.Cnnst)
   defer db.Close()
-  db.Exec(`
-    DROP TABLE IF EXISTS struc;
-  `)
+  db.Exec(`DROP TABLE IF EXISTS struc;`)
   err := db.Exec(`
     CREATE TABLE struc (
       idocn TEXT,

@@ -1,4 +1,3 @@
-// Funtions in this file need to be further developped, status is in progress.
 package idoc2txt
 
 import "log"
@@ -6,6 +5,7 @@ import "os"
 import "path/filepath"
 import "strings"
 
+// Functions in this file need to be further developped, status is in progress
 func PassFilter(s Settings_tp, f os.FileInfo) bool {
   if strings.Contains(f.Name(), "processed") {
     return false
